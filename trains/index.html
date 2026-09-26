@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trains — BTicket</title>
+<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+<nav class="nav"><div class="container nav-in">
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<div class="links"><a href="/flights/">Flights</a><a href="/trains/" class="active">Trains</a><a href="/how-it-works/">How it works</a>
+</div>
+<div class="nav-right">
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button">Sign in</button>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
+</div>
+</div></nav>
+<div class="container phero"><div class="crumbs"><a href="/">Home</a> → Trains</div><h1>Trains</h1><p>High-speed rail across Uzbekistan. Search, compare classes and select your train.</p></div>
+<div class="container" style="padding-bottom:56px">
+<div class="widget-in">
+<div class="fields">
+<div class="field"><small>FROM</small><select id="tr-from"><option>Tashkent</option><option>Samarkand</option><option>Bukhara</option><option>Khiva</option></select></div>
+<button class="swap" data-swap="tr" type="button">⇄</button>
+<div class="field"><small>TO</small><select id="tr-to"><option>Tashkent</option><option>Samarkand</option><option>Bukhara</option><option>Khiva</option></select></div>
+<div class="field"><small>DATE</small><input id="tr-date" type="date" value="2026-09-27" /></div>
+<div class="field"><small>PASSENGERS</small><select id="tr-pax"><option>1 Adult</option><option>2 Adults</option><option>3 Adults</option></select></div>
+</div>
+<button class="btn-cta lg" style="width:100%;margin-top:16px" type="button" id="tr-go">Search tickets →</button>
+<div class="err" id="tr-err"></div>
+</div>
+<div id="tr-loading" style="display:none;margin-top:16px"><div class="loader-box"><div class="spinner"></div><h2>Searching the best options…</h2></div></div>
+<div id="tr-results" style="display:none;margin-top:16px" class="res-grid">
+<aside class="filters" id="tr-filters">
+<b style="font-size:.95rem">Filters</b>
+<small>PRICE</small>
+<select class="flt-sort" data-set="tr"><option value="asc">Price: low → high</option><option value="desc">Price: high → low</option></select>
+<small>STOPS / CLASS</small>
+<label class="frow"><input type="checkbox" class="flt-direct" data-set="tr" /> Direct only</label>
+<small>BAGGAGE</small>
+<label class="frow"><input type="checkbox" class="flt-bag" data-set="tr" checked /> Checked bag included</label>
+<small>DEPARTURE</small>
+<select class="flt-dep" data-set="tr"><option value="any">Any time</option><option value="am">Morning (before 12:00)</option><option value="pm">Afternoon / evening</option></select>
+</aside>
+<div id="tr-tickets"></div>
+</div>
+<div style="margin-top:18px" id="tr-book"><div class="bill" style="max-width:520px;margin:0 auto">
+<h3>Booking summary</h3>
+<div class="brow"><span>Ticket price</span><b id="tb-ticket">—</b></div>
+<div class="brow"><span>BTicket service fee <span class="mut">(10%)</span></span><b id="tb-fee">—</b></div>
+<div class="brow total"><span>Total</span><b id="tb-total">—</b></div>
+<div class="fee-note">Service fees are always shown before you pay.</div>
+<button class="btn-cta lg" style="width:100%;margin-top:16px" type="button" id="tb-confirm">Select train ✅</button>
+</div></div>
+</div>
+<script>
+const TRAINS = [
+ {name:"Afrosiyob", code:"760F", dep:"07:28", arr:"11:05", dur:"3h 37m", cls:"Economy / Business", seats:14, price:124000},
+ {name:"Afrosiyob", code:"762F", dep:"13:15", arr:"16:55", dur:"3h 40m", cls:"Economy / Business", seats:6, price:136000},
+ {name:"Sharq", code:"704F", dep:"19:40", arr:"23:28", dur:"3h 48m", cls:"Economy / Coupe", seats:22, price:116000}
+];
+function fmtUZS(n){ return n.toLocaleString("en-US").replace(/,/g," ")+" UZS"; }
+const q = new URLSearchParams(location.search);
+document.querySelectorAll("[data-swap]").forEach(b => b.addEventListener("click", () => {
+  const a = document.getElementById(b.dataset.swap+"-from"), t = document.getElementById(b.dataset.swap+"-to");
+  const v = a.value; a.value = t.value; t.value = v;
+}));
+function render(){
+  const from = document.getElementById("tr-from").value, to = document.getElementById("tr-to").value;
+  document.getElementById("tr-tickets").innerHTML = TRAINS.map(t => {
+    const fee = Math.round(t.price*0.1);
+    return '<div class="res-detail" style="grid-template-columns:1.4fr auto auto 1fr auto auto">' +
+      '<div class="airline">🚆<div><b>'+t.name+'</b><span style="color:var(--mut);font-size:.8rem;font-weight:600"> '+t.code+'</span></div></div>' +
+      '<div class="seg"><b>'+t.dep+'</b><span>'+from+'</span></div>' +
+      '<div class="seg"><b>'+t.arr+'</b><span>'+to+'</span></div>' +
+      '<div class="dur"><span class="ln"></span>'+t.dur+' • '+t.cls+' • '+t.seats+' seats left</div>' +
+      '<div class="price"><b>'+fmtUZS(t.price)+'</b><span>fee '+fmtUZS(fee)+'</span></div>' +
+      '<button class="selectBtn" data-price="'+t.price+'" type="button">Select</button></div>';
+  }).join("");
+  document.querySelectorAll("#tr-tickets .selectBtn").forEach(btn => btn.addEventListener("click", () => {
+    const pr = +btn.dataset.price, fee = Math.round(pr*0.1);
+    document.getElementById("tb-ticket").textContent = fmtUZS(pr);
+    document.getElementById("tb-fee").textContent = fmtUZS(fee);
+    document.getElementById("tb-total").textContent = fmtUZS(pr+fee);
+    btn.textContent = "Selected ✓"; btn.disabled = true;
+    document.getElementById("tr-book").scrollIntoView({behavior:"smooth", block:"center"});
+  }));
+}
+function go(){
+  const from = document.getElementById("tr-from").value, to = document.getElementById("tr-to").value;
+  const err = document.getElementById("tr-err"); err.textContent = "";
+  if (from===to) { err.textContent = "Please choose a different destination."; return; }
+  document.querySelector(".widget-in").style.display = "none";
+  document.getElementById("tr-loading").style.display = "block";
+  document.getElementById("tr-loading").scrollIntoView({behavior:"smooth"});
+  setTimeout(() => { document.getElementById("tr-loading").style.display = "none"; document.getElementById("tr-results").style.display = "grid"; render(); }, 1800);
+}
+document.getElementById("tr-go").addEventListener("click", go);
+document.getElementById("tb-confirm").addEventListener("click", e => { e.currentTarget.textContent = "Ticket selected ✓"; e.currentTarget.disabled = true; });
+if(q.has("from")) document.getElementById("tr-from").value = q.get("from");
+if(q.has("to")) document.getElementById("tr-to").value = q.get("to");
+if(q.has("date")) document.getElementById("tr-date").value = q.get("date");
+if(q.has("pax")) document.getElementById("tr-pax").value = q.get("pax");
+if(q.has("from") || q.has("to")) go();
+</script>
+<footer><div class="container">
+<div class="foot-cols">
+<div>
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
+<div style="margin-top:14px">
+<a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
+</div>
+</div>
+<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
+</div>
+<div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
+</div></footer>
+</body>
+</html>

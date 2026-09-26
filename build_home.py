@@ -1,24 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BTicket — Your journey. We find the way.</title>
-<link rel="stylesheet" href="/assets/css/style.css" />
-</head>
-<body>
-<nav class="nav"><div class="container nav-in">
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
-<div class="links"><a href="/flights/" class="active">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a>
-</div>
-<div class="nav-right">
-<button class="pill" type="button">EN ▾</button>
-<button class="pill" type="button">UZS ▾</button>
-<button class="btn-outline" type="button">Sign in</button>
-<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
-</div>
-</div></nav>
-<header class="mast">
+from partials import page
+
+ICONS = {
+ 1: '<svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+ 2: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/><path d="M8 11l6 0"/></svg>',
+ 3: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><path d="M12 12l4-4"/></svg>',
+ 4: '<svg viewBox="0 0 24 24"><path d="M4 9l16-5-5 16-3-6-3 2v-4z"/></svg>',
+ 5: '<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg>',
+ 6: '<svg viewBox="0 0 24 24"><path d="M3 8l18-4-3 12-5-2-3 4-2-6z"/></svg>',
+}
+STEPS = [
+ ("TELL US","Choose your destination, date and preferences."),
+ ("SEARCH","BTicket searches available flights and trains."),
+ ("MONITOR","If your ticket isn’t available, we keep looking."),
+ ("FOUND","A matching ticket becomes available."),
+ ("NOTIFY","You receive an instant notification."),
+ ("TRAVEL","Book your journey and go."),
+]
+
+PRE = '''<header class="mast">
 <div class="mast-photo" style="background-image:url(/assets/img/airplane.jpg)"></div>
 <div class="mast-fade"></div>
 <div class="container">
@@ -98,7 +97,11 @@
 
 <section class="section" id="how">
 <div class="sec-head"><h2>How BTicket works</h2><p>From your request to your journey — we handle the searching.</p></div>
-<div class="steps"><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="sn">01</div><div class="sname">TELL US</div><p>Choose your destination, date and preferences.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/><path d="M8 11l6 0"/></svg></div><div class="sn">02</div><div class="sname">SEARCH</div><p>BTicket searches available flights and trains.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><path d="M12 12l4-4"/></svg></div><div class="sn">03</div><div class="sname">MONITOR</div><p>If your ticket isn’t available, we keep looking.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M4 9l16-5-5 16-3-6-3 2v-4z"/></svg></div><div class="sn">04</div><div class="sname">FOUND</div><p>A matching ticket becomes available.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg></div><div class="sn">05</div><div class="sname">NOTIFY</div><p>You receive an instant notification.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M3 8l18-4-3 12-5-2-3 4-2-6z"/></svg></div><div class="sn">06</div><div class="sname">TRAVEL</div><p>Book your journey and go.</p></div></div></section>
+<div class="steps">'''
+
+MID = "</div></section>"
+
+POST = '''
 <section class="section" style="padding-bottom:72px">
 <div class="final-photo">
 <div class="ph" style="background-image:url(/assets/img/train.jpg)"></div>
@@ -144,21 +147,12 @@ setInterval(() => {
   document.getElementById("liveNote").textContent = s.note;
 }, 3200);
 </script>
+'''
 
-<footer><div class="container">
-<div class="foot-cols">
-<div>
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
-<p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
-<div style="margin-top:14px">
-<a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
-</div>
-</div>
-<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
-<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
-<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
-</div>
-<div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
-</div></footer>
-</body>
-</html>
+steps_html = "".join(
+    '<div class="step on"><div class="si">' + ICONS[s] + '</div><div class="sn">0' + str(s) + '</div><div class="sname">' + nm + '</div><p>' + tx + '</p></div>'
+    for s, (nm, tx) in enumerate(STEPS, 1)
+)
+body = PRE + steps_html + MID + POST
+open("index.html","w").write(page("BTicket — Your journey. We find the way.", body, "Flights"))
+print("index.html bytes:", len(body))

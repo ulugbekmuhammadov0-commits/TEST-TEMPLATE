@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Notifications — BTicket</title>
+<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+<nav class="nav"><div class="container nav-in">
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<div class="links"><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a>
+</div>
+<div class="nav-right">
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button">Sign in</button>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
+</div>
+</div></nav>
+<div class="container phero"><div class="crumbs"><a href="/">Home</a> → Notifications</div><h1>Notifications</h1><p>Ticket found, bookings, price alerts and payments — all in one centre.</p></div>
+<div class="container" style="padding-bottom:56px">
+<div class="panel-card">
+<h3>🔔 Notification centre</h3>
+<div class="ntf-tabs">
+<button class="ntf-tab active" data-ntf="all" type="button">All</button>
+<button class="ntf-tab" data-ntf="tickets" type="button">Tickets</button>
+<button class="ntf-tab" data-ntf="bookings" type="button">Bookings</button>
+<button class="ntf-tab" data-ntf="alerts" type="button">Price alerts</button>
+<button class="ntf-tab" data-ntf="payments" type="button">Payments</button>
+<button class="ntf-tab" data-ntf="system" type="button">System</button>
+</div>
+<div id="ntfList">
+<div class="ntf-row" data-cat="tickets"><div class="nic">🎟</div><div><b>Ticket found</b><p>Tashkent → Dubai</p></div><span class="ago">2 minutes ago</span></div>
+<div class="ntf-row" data-cat="bookings"><div class="nic">✅</div><div><b>Booking confirmed</b><p>Tashkent → Samarkand</p></div><span class="ago">1 hour ago</span></div>
+<div class="ntf-row" data-cat="alerts"><div class="nic">💰</div><div><b>Price alert</b><p>Ticket price dropped</p></div><span class="ago">Today</span></div>
+<div class="ntf-row" data-cat="payments"><div class="nic">💳</div><div><b>Payment received</b><p>Booking BT-8842-19</p></div><span class="ago">Yesterday</span></div>
+<div class="ntf-row" data-cat="system"><div class="nic">🛠</div><div><b>Scheduled maintenance</b><p>Oct 3, 02:00–03:00 (UTC+5)</p></div><span class="ago">3 days ago</span></div>
+</div>
+</div>
+<div class="notif-grid" style="margin-top:20px">
+<div class="notif-card"><div class="cap">🖥 DESKTOP</div><div class="win"><div class="top"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="body"><b>🎟 BTicket found a match!</b><div style="color:var(--mut);font-size:.78rem">Tashkent → Dubai • 27 Sep 2026</div></div></div></div>
+<div class="notif-card" style="text-align:center"><div class="cap">📱 MOBILE</div><div class="phone" style="width:130px"><div class="notch"></div><div class="scr"><div style="background:#0e1b33;border-radius:10px;color:#fff;padding:9px;font-size:.68rem;font-weight:700">🎟 BTicket<div style="font-weight:400;margin-top:2px">Tashkent → Dubai — ticket ready.</div></div></div></div></div>
+<div class="notif-card"><div class="cap">✈ TELEGRAM</div><div class="tg"><div class="bubble" style="font-size:.8rem"><b style="color:var(--royal)">BTicket Bot</b> · 2 min<br><br>🎟 <b>Ticket found!</b><br><span style="color:var(--blue);font-weight:700">View ticket →</span></div></div></div>
+<div class="notif-card"><div class="cap">✉ EMAIL</div><div class="mail"><div class="mrow"><div class="av">B</div><div><div class="msub">BTicket found a match!</div><div class="mbody">Tashkent → Dubai • 27 Sep 2026</div></div></div></div></div>
+</div>
+</div>
+<script>
+document.querySelectorAll("[data-ntf]").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll("[data-ntf]").forEach(x => x.classList.remove("active"));
+  t.classList.add("active");
+  const cat = t.dataset.ntf;
+  document.querySelectorAll("#ntfList .ntf-row").forEach(r => {
+    r.style.display = (cat === "all" || r.dataset.cat === cat) ? "" : "none";
+  });
+}));
+</script>
+<footer><div class="container">
+<div class="foot-cols">
+<div>
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
+<div style="margin-top:14px">
+<a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
+</div>
+</div>
+<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
+</div>
+<div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
+</div></footer>
+</body>
+</html>

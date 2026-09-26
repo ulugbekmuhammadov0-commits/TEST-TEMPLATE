@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile — BTicket</title>
+<link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+<nav class="nav"><div class="container nav-in">
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<div class="links"><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a>
+</div>
+<div class="nav-right">
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button">Sign in</button>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
+</div>
+</div></nav>
+<div class="container phero"><div class="crumbs"><a href="/">Home</a> → Profile</div><h1>Profile</h1><p>Passengers, payment methods, preferences and settings.</p></div>
+<div class="container" style="padding-bottom:56px">
+<div class="profile-two">
+<div class="panel-card">
+<h3>👥 Saved passengers</h3>
+<div class="passenger"><div class="pv">UM</div><div><b>Ulugbek M.</b><div style="color:var(--mut);font-size:.83rem">Passport • preferred window seat</div></div><button class="btn-sm" style="margin-left:auto" type="button">Edit</button></div>
+<div class="passenger"><div class="pv">AS</div><div><b>Aziza S.</b><div style="color:var(--mut);font-size:.83rem">Passport • preferred aisle seat</div></div><button class="btn-sm" style="margin-left:auto" type="button">Edit</button></div>
+<button class="btn-outline" style="width:100%;margin-top:14px" type="button">+ Add passenger</button>
+</div>
+<div class="panel-card">
+<h3>💳 Payment methods</h3>
+<div class="kv" style="border:none"><span>HUMO •••• 4412</span><b style="color:var(--green)">Default</b></div>
+<div class="kv" style="border:none"><span>VISA •••• 9087</span><b>—</b></div>
+<button class="btn-outline" style="width:100%;margin-top:14px" type="button">+ Add payment method</button>
+</div>
+</div>
+<div class="panel-card" style="margin-top:20px">
+<h3>🎯 Preferred ticket settings</h3>
+<div class="tabs">
+<button class="tab active" data-ptab="pflight" type="button">✈ Flight preferences</button>
+<button class="tab" data-ptab="ptrain" type="button">🚆 Train preferences</button>
+</div>
+<div class="panel active" id="ppflight">
+<div class="pref-rows">
+<div class="pref"><small>DEPARTURE TIME</small><select><option>Any time</option><option>Morning</option><option>Evening</option></select></div>
+<div class="pref"><small>MAXIMUM PRICE</small><select><option>Up to $300</option><option>Up to $400</option></select></div>
+<div class="pref"><small>AIRLINE PREFERENCE</small><select><option>Any airline</option><option>Uzbekistan Airways</option></select></div>
+<div class="pref"><small>NUMBER OF STOPS</small><select><option>Direct only</option><option>Up to 1 stop</option></select></div>
+<div class="pref"><small>BAGGAGE</small><select><option>1 checked bag</option><option>Carry-on only</option></select></div>
+<div class="pref"><small>CLASS</small><select><option>Economy</option><option>Business</option></select></div>
+</div>
+</div>
+<div class="panel" id="pptrain">
+<div class="pref-rows">
+<div class="pref"><small>TRAIN TYPE</small><select><option>Afrosiyob (high-speed)</option><option>Any</option></select></div>
+<div class="pref"><small>COACH / CLASS</small><select><option>Economy class</option><option>Business class</option></select></div>
+<div class="pref"><small>SEAT PREFERENCE</small><select><option>Window</option><option>Aisle</option></select></div>
+<div class="pref"><small>DEPARTURE TIME</small><select><option>Any time</option><option>Morning</option></select></div>
+</div>
+</div>
+<button class="btn-cta lg" style="width:100%;margin-top:16px" type="button">Save preferences</button>
+</div>
+<div class="panel-card" style="margin-top:20px">
+<h3>⚙ Settings</h3>
+<div class="kv" style="border:none"><span>Language</span><b>English</b></div>
+<div class="kv" style="border:none"><span>Currency</span><b>UZS</b></div>
+<div class="kv" style="border:none"><span>Notifications</span><b>Push • Telegram • Email</b></div>
+<div class="kv" style="border:none"><span>Security</span><b>2FA enabled</b></div>
+</div>
+</div>
+<script>
+document.querySelectorAll("[data-ptab]").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll("[data-ptab]").forEach(x => x.classList.remove("active"));
+  document.querySelectorAll("#ppflight, #pptrain").forEach(x => x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("p" + t.dataset.ptab).classList.add("active");
+}));
+</script>
+<footer><div class="container">
+<div class="foot-cols">
+<div>
+<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
+<div style="margin-top:14px">
+<a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
+</div>
+</div>
+<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
+</div>
+<div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
+</div></footer>
+</body>
+</html>

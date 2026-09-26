@@ -3,59 +3,164 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Привет!</title>
+<title>Билеты — купить легко</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 24px; }
-  .card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 40px 36px; max-width: 420px; width: 100%; text-align: center; }
-  h1 { font-size: 2.5rem; margin-bottom: 8px; }
-  p { opacity: 0.9; margin-bottom: 24px; }
-  button { font-size: 1.1rem; padding: 14px 28px; border: none; border-radius: 999px; cursor: pointer; font-weight: 700; }
-  #helloBtn { background: #fff; color: #764ba2; width: 100%; }
-  #result { display: none; margin-top: 24px; }
-  #result.show { display: block; }
-  .link-box { display: flex; gap: 8px; margin-top: 12px; }
-  #linkInput { flex: 1; padding: 10px 12px; border-radius: 10px; border: none; font-size: 0.85rem; min-width: 0; }
-  #copyBtn { background: #ffd166; color: #333; padding: 10px 16px; font-size: 0.9rem; }
-  #hint { font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; min-height: 100vh; background: linear-gradient(135deg, #1d6df2, #7b2ff7); color: #fff; padding: 24px; display: flex; justify-content: center; }
+  .wrap { width: 100%; max-width: 520px; }
+  header { text-align: center; margin: 16px 0 24px; }
+  header h1 { font-size: 2rem; }
+  header p { opacity: 0.9; margin-top: 6px; }
+  .card { background: #fff; color: #222; border-radius: 20px; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  label { display: block; font-size: 0.85rem; font-weight: 600; margin: 14px 0 6px; color: #555; }
+  select, input { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #ddd; font-size: 1rem; background: #f8f9ff; }
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; min-width: 0; }
+  .price-line { margin-top: 16px; background: #f0f4ff; border-radius: 12px; padding: 12px 14px; font-weight: 700; color: #1d6df2; text-align: center; }
+  .price-line small { display: block; font-weight: 400; color: #666; }
+  #searchBtn { width: 100%; margin-top: 18px; padding: 15px; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg, #1d6df2, #7b2ff7); color: #fff; cursor: pointer; }
+  #searchBtn:active { transform: scale(0.98); }
+  .loader-box { text-align: center; padding: 60px 20px; }
+  .spinner { width: 70px; height: 70px; margin: 0 auto 20px; border-radius: 50%; border: 7px solid rgba(255,255,255,0.3); border-top-color: #fff; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ticket { border: 1.5px solid #e3e6f5; border-radius: 14px; padding: 14px; margin-top: 12px; }
+  .ticket .route { font-weight: 800; font-size: 1.05rem; }
+  .ticket .meta { color: #666; font-size: 0.9rem; margin: 6px 0; }
+  .ticket .buy-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .ticket .cost { font-weight: 800; color: #1d6df2; font-size: 1.1rem; }
+  .buyBtn { padding: 10px 20px; border: none; border-radius: 10px; background: #22c55e; color: #fff; font-weight: 700; cursor: pointer; }
+  .buyBtn.bought { background: #999; }
+  .backBtn { width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.6); background: transparent; color: #fff; font-weight: 700; cursor: pointer; }
+  .err { color: #e11d48; font-size: 0.9rem; margin-top: 10px; min-height: 1.2em; }
 </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Привет!</h1>
-    <p>Нажми кнопку и отправь ссылку другу</p>
-    <button id="helloBtn" type="button">Нажми меня</button>
-    <div id="result">
-      <p>Ура! Теперь отправь эту ссылку:</p>
-      <div class="link-box">
-        <input id="linkInput" type="text" readonly value="" />
-        <button id="copyBtn" type="button">Копировать</button>
+<div class="wrap">
+  <header>
+    <h1>👋 Привет!</h1>
+    <p>Купи билет за пару кликов 🎫</p>
+  </header>
+
+  <!-- Экран поиска -->
+  <section id="searchScreen" class="card screen active">
+    <label for="from">Откуда</label>
+    <select id="from">
+      <option>Ташкент</option>
+      <option>Самарканд</option>
+      <option>Бухара</option>
+      <option>Алматы</option>
+      <option>Москва</option>
+      <option>Стамбул</option>
+    </select>
+    <label for="to">Куда</label>
+    <select id="to">
+      <option>Самарканд</option>
+      <option>Ташкент</option>
+      <option>Бухара</option>
+      <option>Алматы</option>
+      <option>Москва</option>
+      <option>Стамбул</option>
+    </select>
+    <div class="row">
+      <div>
+        <label for="date">Дата</label>
+        <input id="date" type="date" />
       </div>
-      <div id="hint"></div>
+      <div>
+        <label for="count">Пассажиры</label>
+        <input id="count" type="number" min="1" max="10" value="1" />
+      </div>
     </div>
-  </main>
+    <div class="price-line"><span id="priceText">—</span><small>цена за 1 билет</small></div>
+    <button id="searchBtn" type="button">🔍 Поиск</button>
+    <div id="formErr" class="err"></div>
+  </section>
+
+  <!-- Экран загрузки -->
+  <section id="loadingScreen" class="screen">
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <h2>Ищем билеты…</h2>
+      <p style="opacity:.85;margin-top:8px">Подбираем лучшие варианты</p>
+    </div>
+  </section>
+
+  <!-- Экран результатов -->
+  <section id="resultsScreen" class="screen">
+    <div class="card" style="margin-bottom:4px">
+      <div id="resultsTitle" style="font-weight:800"></div>
+      <div id="resultsSub" style="color:#666;font-size:.9rem;margin-top:4px"></div>
+    </div>
+    <div id="tickets"></div>
+    <button id="backBtn" class="backBtn" type="button">← Новый поиск</button>
+  </section>
+</div>
+
 <script>
-  const btn = document.getElementById("helloBtn");
-  const result = document.getElementById("result");
-  const linkInput = document.getElementById("linkInput");
-  const copyBtn = document.getElementById("copyBtn");
-  const hint = document.getElementById("hint");
-  linkInput.value = window.location.href;
-  btn.addEventListener("click", () => {
-    btn.textContent = "Привет!";
-    result.classList.add("show");
-    linkInput.value = window.location.href;
+  const BASE = { "Ташкент": 120000, "Самарканд": 100000, "Бухара": 90000, "Алматы": 450000, "Москва": 1800000, "Стамбул": 2200000 };
+  const from = document.getElementById("from");
+  const to = document.getElementById("to");
+  const date = document.getElementById("date");
+  const count = document.getElementById("count");
+  const priceText = document.getElementById("priceText");
+  const formErr = document.getElementById("formErr");
+  date.value = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+
+  function ticketPrice() {
+    const a = BASE[from.value] || 150000;
+    const b = BASE[to.value] || 150000;
+    return Math.round((a + b) / 2 / 1000) * 1000;
+  }
+  function fmt(n) { return n.toLocaleString("ru-RU") + " сум"; }
+  function updatePrice() { priceText.textContent = fmt(ticketPrice()); }
+  from.addEventListener("change", updatePrice);
+  to.addEventListener("change", updatePrice);
+  updatePrice();
+
+  function show(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", () => {
+    formErr.textContent = "";
+    if (from.value === to.value) { formErr.textContent = "Выберите разные города «Откуда» и «Куда»"; return; }
+    if (!date.value) { formErr.textContent = "Выберите дату поездки"; return; }
+    const n = Math.max(1, Math.min(10, parseInt(count.value) || 1));
+    count.value = n;
+    show("loadingScreen");
+    setTimeout(() => renderResults(n), 2200);
   });
-  copyBtn.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(linkInput.value);
-      hint.textContent = "Ссылка скопирована! Отправь её другу";
-    } catch (e) {
-      linkInput.select();
-      document.execCommand("copy");
-      hint.textContent = "Ссылка скопирована! Отправь её другу";
-    }
-  });
+
+  function renderResults(n) {
+    const price = ticketPrice();
+    document.getElementById("resultsTitle").textContent = from.value + " → " + to.value;
+    document.getElementById("resultsSub").textContent = date.value + " • пассажиров: " + n;
+    const times = [["08:30", "12:10"], ["14:00", "17:40"], ["19:20", "23:05"]];
+    const box = document.getElementById("tickets");
+    box.innerHTML = "";
+    times.forEach((t, i) => {
+      const total = price * n + i * 15000;
+      const el = document.createElement("div");
+      el.className = "card ticket";
+      el.innerHTML = '<div class="route">' + t[0] + " → " + t[1] + "</div>" +
+        '<div class="meta">Рейс TB-10' + (i + 1) + " • " + date.value + " • " + n + " пасс.</div>" +
+        '<div class="buy-row"><span class="cost">' + fmt(total) + '</span>' +
+        '<button class="buyBtn" type="button">Купить</button></div>';
+      el.querySelector(".buyBtn").addEventListener("click", (e) => {
+        const b = e.target;
+        b.textContent = "Куплено ✅";
+        b.classList.add("bought");
+        b.disabled = true;
+      });
+      box.appendChild(el);
+    });
+    show("resultsScreen");
+  }
+
+  document.getElementById("backBtn").addEventListener("click", () => show("searchScreen"));
 </script>
 </body>
 </html>

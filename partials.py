@@ -1,18 +1,28 @@
-CSS = "/assets/css/style.css"
+CSS = "assets/css/style.css"
+
+BASE_SCRIPT = '''<script>
+document.write('<base href="' + (function(){
+  var d = location.pathname.split('/').filter(Boolean);
+  var last = d[d.length - 1] || '';
+  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
+  if (last && (/\\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
+  return '/' + d.join('/') + (d.length >= 0 && d.length ? '/' : '');
+})() + '">');
+</script>'''
 
 def header(active=None):
     def l(href,label):
         act = ' class="active"' if active == label else ""
         return f'<a href="{href}"{act}>{label}</a>'
     return f'''<nav class="nav"><div class="container nav-in">
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
-<div class="links">{l("/flights/","Flights")}{l("/trains/","Trains")}{l("/how-it-works/","How it works")}
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<div class="links">{l("flights/","Flights")}{l("trains/","Trains")}{l("how-it-works/","How it works")}
 </div>
 <div class="nav-right">
 <button class="pill" type="button">EN ▾</button>
 <button class="pill" type="button">UZS ▾</button>
 <button class="btn-outline" type="button">Sign in</button>
-<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="profile/">Get started</a>
 </div>
 </div></nav>'''
 
@@ -20,15 +30,15 @@ def footer():
     return '''<footer><div class="container">
 <div class="foot-cols">
 <div>
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
 <p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
 <div style="margin-top:14px">
 <a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
 </div>
 </div>
-<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
-<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
-<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
+<div><div class="fc-t">Product</div><a href="flights/">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a><a href="support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="support/">Terms</a><a href="support/">Privacy</a><a href="support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="my-bookings/">My bookings</a><a href="notifications/">Notifications</a><a href="active-searches/">Active searches</a><a href="profile/">Profile</a></div>
 </div>
 <div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
 </div></footer>'''
@@ -40,6 +50,7 @@ def page(title, body, active=None):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{title}</title>
+{BASE_SCRIPT}
 <link rel="stylesheet" href="{CSS}" />
 </head>
 <body>
@@ -50,7 +61,7 @@ def page(title, body, active=None):
 </html>'''
 
 def phero(title, sub, crumb=None):
-    c = f'<div class="crumbs"><a href="/">Home</a> → {crumb}</div>' if crumb else ""
+    c = f'<div class="crumbs"><a href="./">Home</a> → {crumb}</div>' if crumb else ""
     return f'''<div class="container phero">{c}<h1>{title}</h1><p>{sub}</p></div>'''
 
 def search_widget(idpfx, cities_from, cities_to, btn):

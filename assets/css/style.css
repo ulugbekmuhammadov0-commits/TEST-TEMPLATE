@@ -44,7 +44,7 @@
   .btn-sm:disabled{opacity:.55;cursor:default}
   /* HERO */
   .hero{position:relative;color:#fff}
-  .hero-photo{position:absolute;inset:0;background:url(assets/img/airplane.jpg) center 30%/cover}
+  .hero-photo{position:absolute;inset:0;background:url(../img/airplane.jpg) center 30%/cover}
   .hero-fade{position:absolute;inset:0;background:linear-gradient(100deg,rgba(7,18,42,.82) 25%,rgba(7,18,42,.35) 60%,rgba(7,18,42,.05))}
   .hero-in{padding:96px 0 132px;position:relative;max-width:760px}
   .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:600;backdrop-filter:blur(6px)}

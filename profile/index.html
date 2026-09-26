@@ -4,21 +4,30 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Profile — BTicket</title>
-<link rel="stylesheet" href="/assets/css/style.css" />
+<script>
+document.write('<base href="' + (function(){
+  var d = location.pathname.split('/').filter(Boolean);
+  var last = d[d.length - 1] || '';
+  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
+  if (last && (/\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
+  return '/' + d.join('/') + (d.length >= 0 && d.length ? '/' : '');
+})() + '">');
+</script>
+<link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 <nav class="nav"><div class="container nav-in">
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
-<div class="links"><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a>
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<div class="links"><a href="flights/">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a>
 </div>
 <div class="nav-right">
 <button class="pill" type="button">EN ▾</button>
 <button class="pill" type="button">UZS ▾</button>
 <button class="btn-outline" type="button">Sign in</button>
-<a class="btn-cta" style="text-decoration:none;display:inline-block" href="/profile/">Get started</a>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="profile/">Get started</a>
 </div>
 </div></nav>
-<div class="container phero"><div class="crumbs"><a href="/">Home</a> → Profile</div><h1>Profile</h1><p>Passengers, payment methods, preferences and settings.</p></div>
+<div class="container phero"><div class="crumbs"><a href="./">Home</a> → Profile</div><h1>Profile</h1><p>Passengers, payment methods, preferences and settings.</p></div>
 <div class="container" style="padding-bottom:56px">
 <div class="profile-two">
 <div class="panel-card">
@@ -79,15 +88,15 @@ document.querySelectorAll("[data-ptab]").forEach(t => t.addEventListener("click"
 <footer><div class="container">
 <div class="foot-cols">
 <div>
-<a class="logo" href="/"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
 <p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
 <div style="margin-top:14px">
 <a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
 </div>
 </div>
-<div><div class="fc-t">Product</div><a href="/flights/">Flights</a><a href="/trains/">Trains</a><a href="/how-it-works/">How it works</a><a href="/support/">Support</a></div>
-<div><div class="fc-t">Legal</div><a href="/support/">Terms</a><a href="/support/">Privacy</a><a href="/support/">Refund policy</a></div>
-<div><div class="fc-t">Account</div><a href="/my-bookings/">My bookings</a><a href="/notifications/">Notifications</a><a href="/active-searches/">Active searches</a><a href="/profile/">Profile</a></div>
+<div><div class="fc-t">Product</div><a href="flights/">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a><a href="support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="support/">Terms</a><a href="support/">Privacy</a><a href="support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="my-bookings/">My bookings</a><a href="notifications/">Notifications</a><a href="active-searches/">Active searches</a><a href="profile/">Profile</a></div>
 </div>
 <div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
 </div></footer>

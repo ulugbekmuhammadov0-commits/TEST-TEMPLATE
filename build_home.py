@@ -18,7 +18,7 @@ STEPS = [
 ]
 
 PRE = '''<header class="mast">
-<div class="mast-photo" style="background-image:url(/assets/img/airplane.jpg)"></div>
+<div class="mast-photo" style="background-image:url(assets/img/airplane.jpg)"></div>
 <div class="mast-fade"></div>
 <div class="container">
 <div class="mast-in">
@@ -86,12 +86,12 @@ PRE = '''<header class="mast">
 <section class="section" id="destinations">
 <div class="sec-head"><h2>Where would you go?</h2><p>Six destinations, one search. Choose where next.</p></div>
 <div class="dest-grid six">
-<div class="dest photo" style="background-image:url(/assets/img/dubai.jpg)"><div class="tint"></div><div class="info"><div><b>Dubai</b><span>United Arab Emirates</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(/assets/img/istanbul.jpg)"><div class="tint"></div><div class="info"><div><b>Istanbul</b><span>Turkey</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(/assets/img/seoul.jpg)"><div class="tint"></div><div class="info"><div><b>Seoul</b><span>South Korea</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(/assets/img/samarkand.jpg)"><div class="tint"></div><div class="info"><div><b>Samarkand</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(/assets/img/bukhara.jpg)"><div class="tint"></div><div class="info"><div><b>Bukhara</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(/assets/img/tashkent.jpg)"><div class="tint"></div><div class="info"><div><b>Tashkent</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/dubai.jpg)"><div class="tint"></div><div class="info"><div><b>Dubai</b><span>United Arab Emirates</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/istanbul.jpg)"><div class="tint"></div><div class="info"><div><b>Istanbul</b><span>Turkey</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/seoul.jpg)"><div class="tint"></div><div class="info"><div><b>Seoul</b><span>South Korea</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/samarkand.jpg)"><div class="tint"></div><div class="info"><div><b>Samarkand</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/bukhara.jpg)"><div class="tint"></div><div class="info"><div><b>Bukhara</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo" style="background-image:url(assets/img/tashkent.jpg)"><div class="tint"></div><div class="info"><div><b>Tashkent</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
 </div>
 </section>
 
@@ -104,12 +104,12 @@ MID = "</div></section>"
 POST = '''
 <section class="section" style="padding-bottom:72px">
 <div class="final-photo">
-<div class="ph" style="background-image:url(/assets/img/train.jpg)"></div>
+<div class="ph" style="background-image:url(assets/img/train.jpg)"></div>
 <div class="ov"></div>
 <div class="fc">
 <h2>Where will you go next?</h2>
 <p>Let BTicket find the ticket.</p>
-<a class="btn-cta lg" style="text-decoration:none;display:inline-block" href="/flights/">Start searching →</a>
+<a class="btn-cta lg" style="text-decoration:none;display:inline-block" href="flights/">Start searching →</a>
 </div>
 </div>
 </section>
@@ -129,7 +129,7 @@ document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", 
   const m = b.dataset.go, f = m === "flights" ? "f" : "t";
   const from = document.getElementById("h"+f+"-from").value, to = document.getElementById("h"+f+"-to").value;
   const date = document.getElementById("h"+f+"-date").value, pax = document.getElementById("h"+f+"-pax").value;
-  location.href = "/" + m + "/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + "&date=" + date + "&pax=" + encodeURIComponent(pax);
+  location.href = m + "/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + "&date=" + date + "&pax=" + encodeURIComponent(pax);
 }));
 const states = [
   {cl:"hard", label:"Hard to find", note:"BTicket is monitoring available tickets."},

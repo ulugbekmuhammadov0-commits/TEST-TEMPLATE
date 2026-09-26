@@ -1,166 +1,330 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Билеты — купить легко</title>
+<title>TICKETUZ — Train tickets across Uzbekistan</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; min-height: 100vh; background: linear-gradient(135deg, #1d6df2, #7b2ff7); color: #fff; padding: 24px; display: flex; justify-content: center; }
-  .wrap { width: 100%; max-width: 520px; }
-  header { text-align: center; margin: 16px 0 24px; }
-  header h1 { font-size: 2rem; }
-  header p { opacity: 0.9; margin-top: 6px; }
-  .card { background: #fff; color: #222; border-radius: 20px; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
-  .screen { display: none; }
-  .screen.active { display: block; }
-  label { display: block; font-size: 0.85rem; font-weight: 600; margin: 14px 0 6px; color: #555; }
-  select, input { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #ddd; font-size: 1rem; background: #f8f9ff; }
-  .row { display: flex; gap: 12px; }
-  .row > div { flex: 1; min-width: 0; }
-  .price-line { margin-top: 16px; background: #f0f4ff; border-radius: 12px; padding: 12px 14px; font-weight: 700; color: #1d6df2; text-align: center; }
-  .price-line small { display: block; font-weight: 400; color: #666; }
-  #searchBtn { width: 100%; margin-top: 18px; padding: 15px; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg, #1d6df2, #7b2ff7); color: #fff; cursor: pointer; }
-  #searchBtn:active { transform: scale(0.98); }
-  .loader-box { text-align: center; padding: 60px 20px; }
-  .spinner { width: 70px; height: 70px; margin: 0 auto 20px; border-radius: 50%; border: 7px solid rgba(255,255,255,0.3); border-top-color: #fff; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .ticket { border: 1.5px solid #e3e6f5; border-radius: 14px; padding: 14px; margin-top: 12px; }
-  .ticket .route { font-weight: 800; font-size: 1.05rem; }
-  .ticket .meta { color: #666; font-size: 0.9rem; margin: 6px 0; }
-  .ticket .buy-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-  .ticket .cost { font-weight: 800; color: #1d6df2; font-size: 1.1rem; }
-  .buyBtn { padding: 10px 20px; border: none; border-radius: 10px; background: #22c55e; color: #fff; font-weight: 700; cursor: pointer; }
-  .buyBtn.bought { background: #999; }
-  .backBtn { width: 100%; margin-top: 16px; padding: 12px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.6); background: transparent; color: #fff; font-weight: 700; cursor: pointer; }
-  .err { color: #e11d48; font-size: 0.9rem; margin-top: 10px; min-height: 1.2em; }
+  :root{
+    --blue:#1f6Bf2; --royal:#2743c7; --violet:#7b2ff7;
+    --ink:#0e1b33; --mut:#5b6b86; --line:#e4eaf5; --bg:#f4f7fd;
+    --r:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,-apple-system,"SF Pro Display","Segoe UI",sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:28px;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;letter-spacing:.04em}
+  .logo-mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff}
+  .links{display:flex;gap:22px;font-size:.93rem;color:#33415c;font-weight:500}
+  .links a{padding:6px 2px;border-bottom:2px solid transparent}
+  .links a.active,.links a:hover{color:var(--blue);border-color:var(--blue)}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .pill{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:600;color:#33415c;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .pill:hover{border-color:var(--blue);color:var(--blue)}
+  .btn-sign{border:1px solid #cfdbf3;background:#fff;border-radius:999px;padding:9px 20px;font-weight:700;font-size:.9rem;cursor:pointer}
+  .btn-sign:hover{border-color:var(--blue);color:var(--blue)}
+  /* HERO */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#eaf1fe 0%,#f4f7fd 70%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding:56px 0 30px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.8rem;font-weight:600;color:var(--royal);box-shadow:0 4px 14px rgba(31,107,242,.08)}
+  .dot{width:8px;height:8px;border-radius:50%;background:#22c55e}
+  h1{font-size:3.1rem;line-height:1.06;letter-spacing:-.02em;margin:18px 0 14px}
+  h1 .grad{background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--mut);font-size:1.08rem;max-width:480px}
+  .hero-stats{display:flex;gap:26px;margin-top:22px}
+  .stat b{font-size:1.25rem;display:block}
+  .stat span{font-size:.83rem;color:var(--mut)}
+  .train-art{background:linear-gradient(135deg,#123a8f,#3b6df0 55%,#8a4df5);border-radius:28px;min-height:340px;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(39,67,199,.28);color:#fff}
+  .train-art .moon{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 65%);top:-110px;right:-80px}
+  .domes{position:absolute;bottom:118px;left:0;right:0;opacity:.35}
+  .rail{position:absolute;bottom:52px;left:30px;right:30px;height:3px;background:rgba(255,255,255,.5);border-radius:2px}
+  .rail::after{content:"";position:absolute;top:-7px;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0 18px,transparent 18px 34px)}
+  .train{position:absolute;bottom:56px;left:34px;right:34px;display:flex;align-items:flex-end}
+  .train-body{flex:1;background:linear-gradient(180deg,#ffffff,#dbe6ff);border-radius:18px 26px 10px 10px;padding:14px 18px;color:#16233f;display:flex;align-items:center;gap:12px}
+  .train-nose{width:64px;height:64px;background:linear-gradient(180deg,#fff,#cfe0ff);clip-path:polygon(0 15%,100% 0,100% 100%,0 85%);border-radius:0 14px 14px 0}
+  .win{height:26px;flex:1;background:linear-gradient(90deg,#2743c7,#1f6bf2);border-radius:8px;opacity:.9}
+  .train-tag{position:absolute;top:24px;left:24px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:10px 16px;border-radius:14px;font-size:.85rem;backdrop-filter:blur(6px)}
+  .train-tag b{font-size:1.2rem;display:block}
+  .arch-note{position:absolute;bottom:18px;left:24px;font-size:.78rem;opacity:.85}
+  /* BOOKING */
+  .booking{margin-top:-4px;padding-bottom:8px}
+  .book-card{background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:26px;box-shadow:0 20px 60px rgba(20,50,120,.12);padding:22px;position:relative;z-index:5}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .tab{border:1px solid var(--line);background:#f3f6fc;color:#44546f;border-radius:999px;padding:10px 18px;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;gap:8px;align-items:center;transition:.18s}
+  .tab.active{background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;border-color:transparent;box-shadow:0 8px 20px rgba(31,107,242,.35)}
+  .tab:not(.active):hover{border-color:var(--blue);color:var(--blue)}
+  .fields{display:grid;grid-template-columns:1fr 44px 1fr 1fr 1fr;gap:12px;align-items:stretch}
+  .field{border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;background:#fbfcff;cursor:pointer;transition:.15s;min-width:0}
+  .field:hover,.field:focus-within{border-color:var(--blue);background:#fff;box-shadow:0 6px 18px rgba(31,107,242,.1)}
+  .field small{display:block;font-size:.7rem;font-weight:700;letter-spacing:.08em;color:#8a97ad}
+  .field .big{font-weight:800;font-size:1.05rem;display:flex;align-items:center;gap:8px}
+  .field .code{background:#e9effe;color:var(--royal);font-size:.72rem;font-weight:800;border-radius:7px;padding:3px 8px}
+  .field .sub2{font-size:.83rem;color:var(--mut);margin-top:2px}
+  .field select,.field input{border:none;background:transparent;font:inherit;font-weight:700;width:100%;outline:none;color:var(--ink)}
+  .swap{align-self:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:1.15rem;transition:.2s}
+  .swap:hover{border-color:var(--blue);transform:rotate(180deg)}
+  .book-foot{display:flex;align-items:center;gap:18px;margin-top:16px;flex-wrap:wrap}
+  .from-price{font-weight:700;color:var(--royal)}
+  .from-price small{display:block;font-weight:500;color:var(--mut);font-size:.8rem}
+  .cta{margin-left:auto;border:none;cursor:pointer;color:#fff;font-weight:800;font-size:1.05rem;padding:16px 38px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--violet));box-shadow:0 12px 28px rgba(80,60,220,.35);transition:.18s}
+  .cta:hover{transform:translateY(-1px);box-shadow:0 16px 34px rgba(80,60,220,.42)}
+  .cta:active{transform:scale(.98)}
+  .err{color:#e11d48;font-size:.88rem;margin-top:10px;min-height:1.2em}
+  /* LOADING + RESULTS */
+  #loadingScreen,#resultsScreen{display:none}
+  #loadingScreen.show,#resultsScreen.show{display:block}
+  .loader-box{text-align:center;padding:56px 20px;color:var(--ink)}
+  .spinner{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;border:6px solid #dbe5fa;border-top-color:var(--blue);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ticket{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:12px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 24px rgba(20,50,120,.07)}
+  .ticket .time{font-weight:800;font-size:1.15rem}
+  .ticket .meta{color:var(--mut);font-size:.87rem;margin-top:4px}
+  .ticket .cost{margin-left:auto;font-weight:800;color:var(--royal);font-size:1.1rem;white-space:nowrap}
+  .buy{border:none;background:#16a34a;color:#fff;font-weight:700;border-radius:12px;padding:11px 22px;cursor:pointer}
+  .buy.bought{background:#94a3b8}
+  .backBtn{margin-top:14px;width:100%;padding:13px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:#33415c}
+  .backBtn:hover{border-color:var(--blue);color:var(--blue)}
+  /* SECTIONS */
+  .section{padding:64px 0 8px}
+  .sec-head{max-width:640px;margin-bottom:26px}
+  .sec-head h2{font-size:1.9rem;letter-spacing:-.01em}
+  .sec-head p{color:var(--mut);margin-top:8px}
+  .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .feat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;transition:.18s}
+  .feat:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(20,50,120,.12)}
+  .feat .ico{width:46px;height:46px;border-radius:14px;background:#eef4ff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px}
+  .feat b{display:block;margin-bottom:6px}
+  .feat p{font-size:.88rem;color:var(--mut);line-height:1.5}
+  .dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .dest{border-radius:24px;overflow:hidden;position:relative;min-height:260px;color:#fff;display:flex;align-items:flex-end;box-shadow:0 14px 34px rgba(20,50,120,.18)}
+  .dest .bg{position:absolute;inset:0}
+  .dest .info{position:relative;padding:18px;width:100%;background:linear-gradient(180deg,transparent,rgba(5,12,30,.72));display:flex;align-items:center;justify-content:space-between}
+  .dest b{font-size:1.1rem;display:block}
+  .dest span{font-size:.8rem;opacity:.85}
+  .explore{border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:8px 16px;font-size:.82rem;font-weight:700;cursor:pointer;backdrop-filter:blur(4px)}
+  .explore:hover{background:#fff;color:var(--ink)}
+  .trust{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px;display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:26px}
+  .trust div{text-align:center}
+  .trust .t-ico{font-size:1.5rem}
+  .trust b{display:block;font-size:.9rem;margin:8px 0 4px}
+  .trust span{font-size:.8rem;color:var(--mut)}
+  footer{margin:56px 0 0;border-top:1px solid var(--line);background:#fff}
+  .foot-in{display:flex;align-items:center;gap:20px;padding:22px 0;color:var(--mut);font-size:.87rem;flex-wrap:wrap}
+  .foot-in .sp{margin-left:auto}
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr}
+    h1{font-size:2.3rem}
+    .fields{grid-template-columns:1fr;gap:10px}
+    .swap{justify-self:center;transform:rotate(90deg)}
+    .cta{width:100%;margin-left:0}
+    .feat-grid,.dest-grid{grid-template-columns:repeat(2,1fr)}
+    .trust{grid-template-columns:repeat(2,1fr)}
+    .links{display:none}
+  }
+  @media(max-width:560px){.feat-grid,.dest-grid{grid-template-columns:1fr}.trust{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>👋 Привет!</h1>
-    <p>Купи билет за пару кликов 🎫</p>
-  </header>
 
-  <!-- Экран поиска -->
-  <section id="searchScreen" class="card screen active">
-    <label for="from">Откуда</label>
-    <select id="from">
-      <option>Ташкент</option>
-      <option>Самарканд</option>
-      <option>Бухара</option>
-      <option>Алматы</option>
-      <option>Москва</option>
-      <option>Стамбул</option>
-    </select>
-    <label for="to">Куда</label>
-    <select id="to">
-      <option>Самарканд</option>
-      <option>Ташкент</option>
-      <option>Бухара</option>
-      <option>Алматы</option>
-      <option>Москва</option>
-      <option>Стамбул</option>
-    </select>
-    <div class="row">
+<nav class="nav">
+  <div class="container nav-in">
+    <a class="logo" href="#"><span class="logo-mark">▭</span>TICKETUZ</a>
+    <div class="links">
+      <a href="#" class="active">Train tickets</a><a href="#">Flights</a><a href="#">Buses</a><a href="#">Hotels</a><a href="#">Support</a>
+    </div>
+    <div class="nav-right">
+      <button class="pill" type="button">UZS ▾</button>
+      <button class="pill" type="button">EN ▾</button>
+      <button class="btn-sign" type="button">Sign in</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
       <div>
-        <label for="date">Дата</label>
-        <input id="date" type="date" />
+        <span class="eyebrow"><span class="dot"></span>Official railway tickets • Uzbekistan</span>
+        <h1>Train tickets across <span class="grad">Uzbekistan</span></h1>
+        <p class="sub">Book your journey quickly, securely and at the best available price.</p>
+        <div class="hero-stats">
+          <div class="stat"><b>2M+</b><span>happy passengers</span></div>
+          <div class="stat"><b>40+</b><span>routes nationwide</span></div>
+          <div class="stat"><b>4.9★</b><span>app rating</span></div>
+        </div>
       </div>
-      <div>
-        <label for="count">Пассажиры</label>
-        <input id="count" type="number" min="1" max="10" value="1" />
+      <div class="train-art" aria-hidden="true">
+        <div class="moon"></div>
+        <svg class="domes" viewBox="0 0 600 90" preserveAspectRatio="none" style="width:100%;height:90px">
+          <g fill="#ffffff">
+            <rect x="60" y="45" width="60" height="45"/><circle cx="90" cy="45" r="22"/>
+            <rect x="180" y="35" width="70" height="55"/><circle cx="215" cy="35" r="26"/>
+            <rect x="320" y="48" width="55" height="42"/><circle cx="347" cy="48" r="19"/>
+            <rect x="440" y="40" width="66" height="50"/><circle cx="473" cy="40" r="24"/>
+          </g>
+        </svg>
+        <div class="train-tag"><b>Afrosiyob Express</b>Tashkent → Bukhara • 3h 40m</div>
+        <div class="train">
+          <div class="train-body"><span style="font-size:1.4rem">🚄</span><div class="win"></div><div class="win"></div><div class="win"></div><div class="win"></div></div>
+          <div class="train-nose"></div>
+        </div>
+        <div class="rail"></div>
+        <div class="arch-note">Samarkand • Bukhara • Khiva — high-speed rail network</div>
       </div>
     </div>
-    <div class="price-line"><span id="priceText">—</span><small>цена за 1 билет</small></div>
-    <button id="searchBtn" type="button">🔍 Поиск</button>
-    <div id="formErr" class="err"></div>
+
+    <div class="booking" id="booking">
+      <div class="book-card" id="bookCard">
+        <div class="tabs">
+          <button class="tab active" type="button" data-tab="train">🚄 Train tickets</button>
+          <button class="tab" type="button" data-tab="air">✈️ Air tickets</button>
+          <button class="tab" type="button" data-tab="bus">🚌 Bus tickets</button>
+          <button class="tab" type="button" data-tab="hotel">🏨 Hotels</button>
+        </div>
+        <div class="fields">
+          <div class="field"><small>FROM</small>
+            <div class="big"><select id="from" aria-label="From">
+              <option value="Tashkent|TAS" selected>Tashkent</option><option value="Samarkand|SAM">Samarkand</option><option value="Bukhara|BHK">Bukhara</option><option value="Khiva|KHV">Khiva</option><option value="Urgench|UGC">Urgench</option>
+            </select><span class="code" id="fromCode">TAS</span></div>
+          </div>
+          <button class="swap" id="swap" type="button" title="Swap direction">⇄</button>
+          <div class="field"><small>TO</small>
+            <div class="big"><select id="to" aria-label="To">
+              <option value="Tashkent|TAS">Tashkent</option><option value="Samarkand|SAM">Samarkand</option><option value="Bukhara|BHK" selected>Bukhara</option><option value="Khiva|KHV">Khiva</option><option value="Urgench|UGC">Urgench</option>
+            </select><span class="code" id="toCode">BHK</span></div>
+          </div>
+          <div class="field"><small>DATE</small><input id="date" type="date" value="2026-09-27" /><div class="sub2" id="dateNice">27 September 2026</div></div>
+          <div class="field"><small>PASSENGERS</small>
+            <select id="count" aria-label="Passengers">
+              <option value="1" selected>1 passenger</option><option value="2">2 passengers</option><option value="3">3 passengers</option><option value="4">4 passengers</option><option value="5">5 passengers</option>
+            </select>
+            <div class="sub2" id="perks">Standard • flexible refund</div>
+          </div>
+        </div>
+        <div class="book-foot">
+          <div class="from-price"><span id="priceText">From 105,000 UZS</span><small>best available price</small></div>
+          <button class="cta" id="searchBtn" type="button">Find tickets →</button>
+        </div>
+        <div class="err" id="formErr"></div>
+      </div>
+
+      <div id="loadingScreen"><div class="loader-box"><div class="spinner"></div><h2>Finding the best trains…</h2><p style="color:var(--mut);margin-top:8px" id="loadingSub">Tashkent → Bukhara • checking live availability</p></div></div>
+
+      <div id="resultsScreen">
+        <div class="book-card" style="padding:18px 22px"><b id="resultsTitle"></b><div style="color:var(--mut);font-size:.9rem;margin-top:4px" id="resultsSub"></div></div>
+        <div id="tickets"></div>
+        <button class="backBtn" id="backBtn" type="button">← New search</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="sec-head"><h2>Why travel with TICKETUZ</h2><p>Everything you need for effortless rail travel in one premium product.</p></div>
+    <div class="feat-grid">
+      <div class="feat"><div class="ico">🗺️</div><b>Popular routes</b><p>Tashkent, Samarkand, Bukhara and more</p></div>
+      <div class="feat"><div class="ico">💎</div><b>Best prices</b><p>Transparent pricing and special offers</p></div>
+      <div class="feat"><div class="ico">⚡</div><b>Fast booking</b><p>Book your ticket in just a few clicks</p></div>
+      <div class="feat"><div class="ico">🔒</div><b>Secure payment</b><p>Safe and reliable online payments</p></div>
+    </div>
   </section>
 
-  <!-- Экран загрузки -->
-  <section id="loadingScreen" class="screen">
-    <div class="loader-box">
-      <div class="spinner"></div>
-      <h2>Ищем билеты…</h2>
-      <p style="opacity:.85;margin-top:8px">Подбираем лучшие варианты</p>
+  <section class="section">
+    <div class="sec-head"><h2>Popular destinations</h2><p>Discover the timeless cities of Uzbekistan by high-speed train.</p></div>
+    <div class="dest-grid">
+      <div class="dest"><div class="bg" style="background:linear-gradient(135deg,#1f6bf2,#0b2a6b)"></div><div style="position:absolute;top:22px;left:22px;font-size:3rem">🕌</div><div class="info"><div><b>Tashkent</b><span>Capital • TAS</span></div><button class="explore" type="button">Explore</button></div></div>
+      <div class="dest"><div class="bg" style="background:linear-gradient(135deg,#7b2ff7,#2b1a6b)"></div><div style="position:absolute;top:22px;left:22px;font-size:3rem">🟦</div><div class="info"><div><b>Samarkand</b><span>Registan • SAM</span></div><button class="explore" type="button">Explore</button></div></div>
+      <div class="dest"><div class="bg" style="background:linear-gradient(135deg,#0ea5e9,#123a8f)"></div><div style="position:absolute;top:22px;left:22px;font-size:3rem">🏰</div><div class="info"><div><b>Bukhara</b><span>Old city • BHK</span></div><button class="explore" type="button">Explore</button></div></div>
+      <div class="dest"><div class="bg" style="background:linear-gradient(135deg,#f59e0b,#7c2d12)"></div><div style="position:absolute;top:22px;left:22px;font-size:3rem">🏜️</div><div class="info"><div><b>Khiva</b><span>Itchan Kala • KHV</span></div><button class="explore" type="button">Explore</button></div></div>
     </div>
   </section>
 
-  <!-- Экран результатов -->
-  <section id="resultsScreen" class="screen">
-    <div class="card" style="margin-bottom:4px">
-      <div id="resultsTitle" style="font-weight:800"></div>
-      <div id="resultsSub" style="color:#666;font-size:.9rem;margin-top:4px"></div>
+  <section class="section" style="padding-bottom:40px">
+    <div class="sec-head"><h2>Travel with confidence</h2><p>Official tickets and support at every step of your journey.</p></div>
+    <div class="trust">
+      <div><div class="t-ico">🛡️</div><b>Secure payments</b><span>Encrypted checkout</span></div>
+      <div><div class="t-ico">🎫</div><b>Official tickets</b><span>Verified by carriers</span></div>
+      <div><div class="t-ico">🎧</div><b>24/7 support</b><span>Always here to help</span></div>
+      <div><div class="t-ico">↩️</div><b>Easy refunds</b><span>Flexible returns</span></div>
+      <div><div class="t-ico">📱</div><b>Mobile-friendly</b><span>Book on any device</span></div>
     </div>
-    <div id="tickets"></div>
-    <button id="backBtn" class="backBtn" type="button">← Новый поиск</button>
   </section>
-</div>
+</main>
+
+<footer><div class="container foot-in"><span><b style="color:var(--ink)">TICKETUZ</b> — train tickets across Uzbekistan</span><span class="sp">© 2026 TICKETUZ • Secure checkout • UZS</span></div></footer>
 
 <script>
-  const BASE = { "Ташкент": 120000, "Самарканд": 100000, "Бухара": 90000, "Алматы": 450000, "Москва": 1800000, "Стамбул": 2200000 };
-  const from = document.getElementById("from");
-  const to = document.getElementById("to");
-  const date = document.getElementById("date");
-  const count = document.getElementById("count");
-  const priceText = document.getElementById("priceText");
-  const formErr = document.getElementById("formErr");
-  date.value = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+  const BASE = { Tashkent: 130000, Samarkand: 105000, Bukhara: 118000, Khiva: 165000, Urgench: 160000 };
+  const from = document.getElementById("from"), to = document.getElementById("to");
+  const fromCode = document.getElementById("fromCode"), toCode = document.getElementById("toCode");
+  const date = document.getElementById("date"), dateNice = document.getElementById("dateNice");
+  const count = document.getElementById("count"), priceText = document.getElementById("priceText");
+  const formErr = document.getElementById("formErr"), loadingSub = document.getElementById("loadingSub");
+  const bookCard = document.getElementById("bookCard"), loadingScreen = document.getElementById("loadingScreen"), resultsScreen = document.getElementById("resultsScreen");
 
-  function ticketPrice() {
-    const a = BASE[from.value] || 150000;
-    const b = BASE[to.value] || 150000;
-    return Math.round((a + b) / 2 / 1000) * 1000;
-  }
-  function fmt(n) { return n.toLocaleString("ru-RU") + " сум"; }
-  function updatePrice() { priceText.textContent = fmt(ticketPrice()); }
-  from.addEventListener("change", updatePrice);
-  to.addEventListener("change", updatePrice);
-  updatePrice();
+  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+  }));
+  document.querySelectorAll(".explore").forEach(b => b.addEventListener("click", () => {
+    document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
+  }));
 
-  function show(id) {
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+  function city(v){ return v.split("|")[0]; }
+  function code(v){ return v.split("|")[1]; }
+  function fmt(n){ return n.toLocaleString("en-US").replace(/,/g, " ") + " UZS"; }
+  function price(){ return Math.round(((BASE[city(from.value)]||120000)+(BASE[city(to.value)]||120000))/2/1000)*1000; }
+  function refresh(){
+    fromCode.textContent = code(from.value); toCode.textContent = code(to.value);
+    const d = new Date(date.value + "T12:00:00");
+    dateNice.textContent = isNaN(d) ? "Select date" : d.toLocaleDateString("en-GB", { day:"numeric", month:"long", year:"numeric" });
+    priceText.textContent = "From " + fmt(price());
   }
+  [from,to].forEach(el => el.addEventListener("change", refresh));
+  date.addEventListener("change", refresh);
+  refresh();
+
+  document.getElementById("swap").addEventListener("click", () => {
+    const v = from.value; from.value = to.value; to.value = v; refresh();
+  });
 
   document.getElementById("searchBtn").addEventListener("click", () => {
     formErr.textContent = "";
-    if (from.value === to.value) { formErr.textContent = "Выберите разные города «Откуда» и «Куда»"; return; }
-    if (!date.value) { formErr.textContent = "Выберите дату поездки"; return; }
-    const n = Math.max(1, Math.min(10, parseInt(count.value) || 1));
-    count.value = n;
-    show("loadingScreen");
-    setTimeout(() => renderResults(n), 2200);
+    if (city(from.value) === city(to.value)) { formErr.textContent = "Please choose different origin and destination."; return; }
+    if (!date.value) { formErr.textContent = "Please choose a travel date."; return; }
+    bookCard.style.display = "none"; resultsScreen.classList.remove("show"); loadingScreen.classList.add("show");
+    loadingSub.textContent = city(from.value) + " → " + city(to.value) + " • checking live availability";
+    loadingScreen.scrollIntoView({ behavior:"smooth", block:"center" });
+    setTimeout(() => render(+count.value), 2200);
   });
 
-  function renderResults(n) {
-    const price = ticketPrice();
-    document.getElementById("resultsTitle").textContent = from.value + " → " + to.value;
-    document.getElementById("resultsSub").textContent = date.value + " • пассажиров: " + n;
-    const times = [["08:30", "12:10"], ["14:00", "17:40"], ["19:20", "23:05"]];
-    const box = document.getElementById("tickets");
+  function render(n){
+    const p = price(), box = document.getElementById("tickets");
+    document.getElementById("resultsTitle").textContent = city(from.value) + " → " + city(to.value);
+    document.getElementById("resultsSub").textContent = dateNice.textContent + " • " + n + (n>1?" passengers":" passenger");
+    const trains = [["07:28","11:05","Afrosiyob • 760F",0],["13:15","16:55","Afrosiyob • 762F",12000],["19:40","23:28","Sharq • 704F",-8000]];
     box.innerHTML = "";
-    times.forEach((t, i) => {
-      const total = price * n + i * 15000;
+    trains.forEach((t,i) => {
+      const total = (p + t[3]) * n;
       const el = document.createElement("div");
-      el.className = "card ticket";
-      el.innerHTML = '<div class="route">' + t[0] + " → " + t[1] + "</div>" +
-        '<div class="meta">Рейс TB-10' + (i + 1) + " • " + date.value + " • " + n + " пасс.</div>" +
-        '<div class="buy-row"><span class="cost">' + fmt(total) + '</span>' +
-        '<button class="buyBtn" type="button">Купить</button></div>';
-      el.querySelector(".buyBtn").addEventListener("click", (e) => {
-        const b = e.target;
-        b.textContent = "Куплено ✅";
-        b.classList.add("bought");
-        b.disabled = true;
+      el.className = "ticket";
+      el.innerHTML = '<div><div class="time">'+t[0]+" → "+t[1]+'</div><div class="meta">'+t[2]+" • "+dateNice.textContent+"</div></div>" +
+        '<div class="cost">'+fmt(total)+'</div><button class="buy" type="button">Buy</button>';
+      el.querySelector(".buy").addEventListener("click", e => {
+        const b = e.target; b.textContent = "Booked ✅"; b.classList.add("bought"); b.disabled = true;
       });
       box.appendChild(el);
     });
-    show("resultsScreen");
+    loadingScreen.classList.remove("show"); resultsScreen.classList.add("show");
   }
-
-  document.getElementById("backBtn").addEventListener("click", () => show("searchScreen"));
+  document.getElementById("backBtn").addEventListener("click", () => {
+    resultsScreen.classList.remove("show"); bookCard.style.display = "block";
+  });
 </script>
 </body>
 </html>

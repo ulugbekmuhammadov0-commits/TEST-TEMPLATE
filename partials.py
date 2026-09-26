@@ -1,13 +1,16 @@
 CSS = "assets/css/style.css"
 
 BASE_SCRIPT = '''<script>
-document.write('<base href="' + (function(){
+(function(){
   var d = location.pathname.split('/').filter(Boolean);
   var last = d[d.length - 1] || '';
   var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
   if (last && (/\\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
-  return '/' + d.join('/') + (d.length >= 0 && d.length ? '/' : '');
-})() + '">');
+  var root = '/' + d.join('/') + (d.length ? '/' : '');
+  document.write('<base href="' + root + '">');
+  document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
+  document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
+})();
 </script>'''
 
 def header(active=None):
@@ -50,9 +53,7 @@ def page(title, body, active=None):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{title}</title>
-<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
 {BASE_SCRIPT}
-<link rel="stylesheet" href="{CSS}" />
 </head>
 <body>
 {header(active)}

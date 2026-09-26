@@ -4,17 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Support — BTicket</title>
-<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
 <script>
-document.write('<base href="' + (function(){
+(function(){
   var d = location.pathname.split('/').filter(Boolean);
   var last = d[d.length - 1] || '';
   var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
   if (last && (/\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
-  return '/' + d.join('/') + (d.length >= 0 && d.length ? '/' : '');
-})() + '">');
+  var root = '/' + d.join('/') + (d.length ? '/' : '');
+  document.write('<base href="' + root + '">');
+  document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
+  document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
+})();
 </script>
-<link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 <nav class="nav"><div class="container nav-in">

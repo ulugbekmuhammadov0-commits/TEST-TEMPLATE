@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Привет!</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 24px; }
+  .card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 40px 36px; max-width: 420px; width: 100%; text-align: center; }
+  h1 { font-size: 2.5rem; margin-bottom: 8px; }
+  p { opacity: 0.9; margin-bottom: 24px; }
+  button { font-size: 1.1rem; padding: 14px 28px; border: none; border-radius: 999px; cursor: pointer; font-weight: 700; }
+  #helloBtn { background: #fff; color: #764ba2; width: 100%; }
+  #result { display: none; margin-top: 24px; }
+  #result.show { display: block; }
+  .link-box { display: flex; gap: 8px; margin-top: 12px; }
+  #linkInput { flex: 1; padding: 10px 12px; border-radius: 10px; border: none; font-size: 0.85rem; min-width: 0; }
+  #copyBtn { background: #ffd166; color: #333; padding: 10px 16px; font-size: 0.9rem; }
+  #hint { font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <h1>Привет!</h1>
+    <p>Нажми кнопку и отправь ссылку другу</p>
+    <button id="helloBtn" type="button">Нажми меня</button>
+    <div id="result">
+      <p>Ура! Теперь отправь эту ссылку:</p>
+      <div class="link-box">
+        <input id="linkInput" type="text" readonly value="" />
+        <button id="copyBtn" type="button">Копировать</button>
+      </div>
+      <div id="hint"></div>
+    </div>
+  </main>
+<script>
+  const btn = document.getElementById("helloBtn");
+  const result = document.getElementById("result");
+  const linkInput = document.getElementById("linkInput");
+  const copyBtn = document.getElementById("copyBtn");
+  const hint = document.getElementById("hint");
+  linkInput.value = window.location.href;
+  btn.addEventListener("click", () => {
+    btn.textContent = "Привет!";
+    result.classList.add("show");
+    linkInput.value = window.location.href;
+  });
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(linkInput.value);
+      hint.textContent = "Ссылка скопирована! Отправь её другу";
+    } catch (e) {
+      linkInput.select();
+      document.execCommand("copy");
+      hint.textContent = "Ссылка скопирована! Отправь её другу";
+    }
+  });
+</script>
+</body>
+</html>

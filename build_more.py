@@ -1,9 +1,9 @@
 import os
 from partials import page, phero
 
-def write(path, title, body, active=None):
+def write(path, title, body, active=None, guard=False):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    open(path, "w").write(page(title, body, active))
+    open(path, "w").write(page(title, body, active, guard))
     print(path, len(body))
 
 # ============ ACTIVE SEARCHES ============
@@ -42,7 +42,7 @@ AS += '''
 <p>BTicket Availability Score is based on currently available booking inventory and your selected travel criteria.</p>
 </div>
 </div>'''
-write("active-searches/index.html", "Active searches — BTicket", AS)
+write("active-searches/index.html", "Active searches — BTicket", AS, guard=True)
 
 # ============ MY BOOKINGS ============
 MB = phero("My bookings", "Confirmed and previous bookings — with digital tickets always at hand.", "My bookings")
@@ -95,7 +95,7 @@ MB += '''
   qr.innerHTML = cells;
 })();
 </script>'''
-write("my-bookings/index.html", "My bookings — BTicket", MB)
+write("my-bookings/index.html", "My bookings — BTicket", MB, guard=True)
 
 # ============ NOTIFICATIONS ============
 NT = phero("Notifications", "Ticket found, bookings, price alerts and payments — all in one centre.", "Notifications")
@@ -136,4 +136,4 @@ document.querySelectorAll("[data-ntf]").forEach(t => t.addEventListener("click",
   });
 }));
 </script>'''
-write("notifications/index.html", "Notifications — BTicket", NT)
+write("notifications/index.html", "Notifications — BTicket", NT, guard=True)

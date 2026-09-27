@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create account — BTicket</title>
+<script>
+(function(){
+  var d = location.pathname.split('/').filter(Boolean);
+  var last = d[d.length - 1] || '';
+  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile','register','login'];
+  if (last && (/\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
+  var root = '/' + d.join('/') + (d.length ? '/' : '');
+  window.BT_ROOT = root;
+  document.write('<base href="' + root + '">');
+  document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
+  document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
+})();
+</script>
+</head>
+<body>
+
+<nav class="nav"><div class="container nav-in">
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<div class="links" id="navLinksGuest"></div>
+<div class="links" id="navLinksAuthed" style="display:none"><a href="flights/">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a><a href="my-bookings/">My bookings</a><a href="active-searches/">Active searches</a><a href="notifications/">Notifications</a></div>
+<div class="nav-right" id="navGuest">
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<a class="btn-outline" style="text-decoration:none;display:inline-block" href="login/">Sign in</a>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="register/">Get started</a>
+</div>
+<div class="nav-right" id="navAuthed" style="display:none">
+<a class="pill" style="text-decoration:none" href="profile/">👤 <span id="navName">Profile</span></a>
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button" onclick="btOut()">Sign out</button>
+</div>
+</div></nav>
+
+<div class="auth-wrap">
+<div class="auth-photo" style="background-image:url(assets/img/airplane.jpg)">
+<div class="ov"></div>
+<div class="q"><b>Your journey. We find the way.</b><span>Join 2M+ travellers who let BTicket find their tickets.</span></div>
+</div>
+<div class="auth-form">
+<div class="auth-card" id="regCard">
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<h1>Start your journey with BTicket.</h1>
+<p class="sub">Create an account and let us find your next ticket.</p>
+<form id="regForm" novalidate>
+  <div class="fieldx"><label for="r-first">First name</label><input id="r-first" type="text" autocomplete="given-name" /><div class="fe" id="fe-first"></div></div>
+  <div class="fieldx"><label for="r-last">Last name</label><input id="r-last" type="text" autocomplete="family-name" /><div class="fe" id="fe-last"></div></div>
+  <div class="fieldx"><label for="r-email">Email</label><input id="r-email" type="email" autocomplete="email" /><div class="fe" id="fe-email"></div></div>
+  <div class="fieldx"><label for="r-phone">Phone number</label><input id="r-phone" type="tel" autocomplete="tel" placeholder="+998 90 000 00 00" /><div class="fe" id="fe-phone"></div></div>
+  <div class="fieldx"><label for="r-pass">Password</label>
+    <div class="pw-wrap"><input id="r-pass" type="password" autocomplete="new-password" />
+    <button class="pw-toggle" type="button" data-toggle="r-pass" aria-label="Show password">👁</button></div>
+    <div class="fe" id="fe-pass"></div></div>
+  <div class="fieldx"><label for="r-pass2">Confirm password</label>
+    <div class="pw-wrap"><input id="r-pass2" type="password" autocomplete="new-password" />
+    <button class="pw-toggle" type="button" data-toggle="r-pass2" aria-label="Show password">👁</button></div>
+    <div class="fe" id="fe-pass2"></div></div>
+  <label class="terms"><input type="checkbox" id="r-terms" />
+  <span>I agree to the <a href="../support/" style="color:var(--blue);font-weight:700">Terms</a> and <a href="../support/" style="color:var(--blue);font-weight:700">Privacy Policy</a>.</span></label>
+  <div class="fe" id="fe-terms"></div>
+  <button class="btn-cta lg auth-submit" type="submit" id="r-submit">Create account</button>
+</form>
+<div class="or">OR</div>
+<div class="social">
+  <button type="button" id="r-google">Continue with Google</button>
+  <button type="button" id="r-apple">Continue with Apple</button>
+</div>
+<div class="auth-alt">Already have an account? <a href="login/" id="toLogin">Sign in</a></div>
+</div>
+<div class="auth-card success-box" id="regSuccess" style="display:none">
+  <div class="tick">✓</div>
+  <h2>Account created!</h2>
+  <p>Welcome aboard — taking you back to your search…</p>
+</div>
+</div>
+</div>
+<script>
+document.querySelectorAll(".pw-toggle").forEach(b => b.addEventListener("click", () => {
+  const inp = document.getElementById(b.dataset.toggle);
+  inp.type = inp.type === "password" ? "text" : "password";
+  b.textContent = inp.type === "password" ? "👁" : "🙈";
+}));
+function setErr(id, msg){ document.getElementById("fe-" + id).textContent = msg || ""; }
+function bad(id, isBad){ document.getElementById(id).classList.toggle("bad", !!isBad); }
+document.getElementById("regForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const first = document.getElementById("r-first").value.trim();
+  const last = document.getElementById("r-last").value.trim();
+  const email = document.getElementById("r-email").value.trim();
+  const phone = document.getElementById("r-phone").value.trim();
+  const pass = document.getElementById("r-pass").value;
+  const pass2 = document.getElementById("r-pass2").value;
+  const terms = document.getElementById("r-terms").checked;
+  let ok = true;
+  [[ "first", first.length >= 1 ], [ "last", last.length >= 1 ], [ "email", /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ],
+   [ "phone", phone.replace(/\D/g, "").length >= 7 ], [ "pass", pass.length >= 6 ], [ "pass2", pass2 === pass && pass2.length > 0 ],
+   [ "terms", terms ]].forEach(([id, valid]) => { setErr(id, valid ? "" : ({ first:"Enter your first name", last:"Enter your last name",
+    email:"Enter a valid email address", phone:"Enter a valid phone number", pass:"Password must be at least 6 characters",
+    pass2:"Passwords do not match", terms:"Please accept the Terms to continue" })[id]);
+    if (id !== "terms") bad("r-" + id.replace("pass2","pass2") === "r-pass2" ? "r-pass2" : "r-" + id, !valid);
+    ok = ok && valid; });
+  bad("r-pass2", pass2 !== pass || !pass2);
+  if (!ok) return;
+  const btn = document.getElementById("r-submit");
+  btn.disabled = true; btn.textContent = "Creating account…";
+  setTimeout(() => {
+    btSave({ first: first, last: last, email: email, phone: phone });
+    document.getElementById("regCard").style.display = "none";
+    document.getElementById("regSuccess").style.display = "block";
+    const ret = sessionStorage.getItem("bticket_return");
+    sessionStorage.removeItem("bticket_return");
+    setTimeout(() => { location.href = ret || (window.BT_ROOT + "flights/"); }, 1300);
+  }, 900);
+});
+["r-google","r-apple"].forEach(id => document.getElementById(id).addEventListener("click", () => {
+  btSave({ first: "Traveller", email: "social@bticket.uz" });
+  const ret = sessionStorage.getItem("bticket_return");
+  sessionStorage.removeItem("bticket_return");
+  location.href = ret || (window.BT_ROOT + "flights/");
+}));
+</script>
+<footer><div class="container">
+<div class="foot-cols">
+<div>
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
+<div style="margin-top:14px">
+<a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>
+</div>
+</div>
+<div><div class="fc-t">Product</div><a href="flights/">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a><a href="support/">Support</a></div>
+<div><div class="fc-t">Legal</div><a href="support/">Terms</a><a href="support/">Privacy</a><a href="support/">Refund policy</a></div>
+<div><div class="fc-t">Account</div><a href="my-bookings/">My bookings</a><a href="notifications/">Notifications</a><a href="active-searches/">Active searches</a><a href="profile/">Profile</a></div>
+</div>
+<div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
+</div></footer>
+<script>
+function btUser(){ try { return JSON.parse(localStorage.getItem('bticket_user') || 'null'); } catch(e){ return null; } }
+function btAuthed(){ return !!localStorage.getItem('bticket_user'); }
+function btSave(u){ localStorage.setItem('bticket_user', JSON.stringify(u)); }
+function btOut(){ localStorage.removeItem('bticket_user'); location.href = window.BT_ROOT; }
+function btGate(target){
+  sessionStorage.setItem('bticket_return', target || location.href);
+  location.href = window.BT_ROOT + 'register/';
+}
+(function(){
+  var u = btUser();
+  var g = document.getElementById('navGuest'), a = document.getElementById('navAuthed');
+  var gl = document.getElementById('navLinksGuest'), al = document.getElementById('navLinksAuthed');
+  if (g && a){ g.style.display = u ? 'none' : ''; a.style.display = u ? '' : 'none'; }
+  if (gl && al){ al.style.display = u ? '' : 'none'; }
+  if (u){ var n = document.getElementById('navName'); if (n) n.textContent = (u.first || 'Profile'); }
+  var guard = document.getElementById('authGuard');
+  if (guard && !u){
+    sessionStorage.setItem('bticket_return', location.href);
+    location.href = window.BT_ROOT + 'login/';
+  }
+})();
+</script>
+</body>
+</html>

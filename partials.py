@@ -4,12 +4,37 @@ BASE_SCRIPT = '''<script>
 (function(){
   var d = location.pathname.split('/').filter(Boolean);
   var last = d[d.length - 1] || '';
-  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
+  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile','register','login'];
   if (last && (/\\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
   var root = '/' + d.join('/') + (d.length ? '/' : '');
+  window.BT_ROOT = root;
   document.write('<base href="' + root + '">');
   document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
   document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
+})();
+</script>'''
+
+AUTH_SCRIPT = '''<script>
+function btUser(){ try { return JSON.parse(localStorage.getItem('bticket_user') || 'null'); } catch(e){ return null; } }
+function btAuthed(){ return !!localStorage.getItem('bticket_user'); }
+function btSave(u){ localStorage.setItem('bticket_user', JSON.stringify(u)); }
+function btOut(){ localStorage.removeItem('bticket_user'); location.href = window.BT_ROOT; }
+function btGate(target){
+  sessionStorage.setItem('bticket_return', target || location.href);
+  location.href = window.BT_ROOT + 'register/';
+}
+(function(){
+  var u = btUser();
+  var g = document.getElementById('navGuest'), a = document.getElementById('navAuthed');
+  var gl = document.getElementById('navLinksGuest'), al = document.getElementById('navLinksAuthed');
+  if (g && a){ g.style.display = u ? 'none' : ''; a.style.display = u ? '' : 'none'; }
+  if (gl && al){ al.style.display = u ? '' : 'none'; }
+  if (u){ var n = document.getElementById('navName'); if (n) n.textContent = (u.first || 'Profile'); }
+  var guard = document.getElementById('authGuard');
+  if (guard && !u){
+    sessionStorage.setItem('bticket_return', location.href);
+    location.href = window.BT_ROOT + 'login/';
+  }
 })();
 </script>'''
 
@@ -19,13 +44,19 @@ def header(active=None):
         return f'<a href="{href}"{act}>{label}</a>'
     return f'''<nav class="nav"><div class="container nav-in">
 <a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
-<div class="links">{l("flights/","Flights")}{l("trains/","Trains")}{l("how-it-works/","How it works")}
-</div>
-<div class="nav-right">
+<div class="links" id="navLinksGuest"></div>
+<div class="links" id="navLinksAuthed" style="display:none">{l("flights/","Flights")}{l("trains/","Trains")}{l("how-it-works/","How it works")}{l("my-bookings/","My bookings")}{l("active-searches/","Active searches")}{l("notifications/","Notifications")}</div>
+<div class="nav-right" id="navGuest">
 <button class="pill" type="button">EN ▾</button>
 <button class="pill" type="button">UZS ▾</button>
-<button class="btn-outline" type="button">Sign in</button>
-<a class="btn-cta" style="text-decoration:none;display:inline-block" href="profile/">Get started</a>
+<a class="btn-outline" style="text-decoration:none;display:inline-block" href="login/">Sign in</a>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="register/">Get started</a>
+</div>
+<div class="nav-right" id="navAuthed" style="display:none">
+<a class="pill" style="text-decoration:none" href="profile/">👤 <span id="navName">Profile</span></a>
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button" onclick="btOut()">Sign out</button>
 </div>
 </div></nav>'''
 
@@ -46,7 +77,8 @@ def footer():
 <div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
 </div></footer>'''
 
-def page(title, body, active=None):
+def page(title, body, active=None, guard=False):
+    guard_html = '<span id="authGuard"></span>' if guard else ''
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,9 +88,11 @@ def page(title, body, active=None):
 {BASE_SCRIPT}
 </head>
 <body>
+{guard_html}
 {header(active)}
 {body}
 {footer()}
+{AUTH_SCRIPT}
 </body>
 </html>'''
 

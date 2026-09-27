@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Active searches — BTicket</title>
+<title>Sign in — BTicket</title>
 <script>
 (function(){
   var d = location.pathname.split('/').filter(Boolean);
@@ -19,7 +19,7 @@
 </script>
 </head>
 <body>
-<span id="authGuard"></span>
+
 <nav class="nav"><div class="container nav-in">
 <a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
 <div class="links" id="navLinksGuest"></div>
@@ -37,40 +37,77 @@
 <button class="btn-outline" type="button" onclick="btOut()">Sign out</button>
 </div>
 </div></nav>
-<div class="container phero"><div class="crumbs"><a href="./">Home</a> → Active searches</div><h1>Active searches</h1><p>Your automatic ticket monitoring. BTicket watches availability and target prices around the clock.</p></div>
-<div class="container" style="padding-bottom:56px">
-<div class="panel-card">
-<h3>🔍 Your active searches</h3>
-<div class="search-row">
-<div><div class="route">Tashkent → Dubai</div><div class="prefs">27 September 2026 • 1 passenger • Target price: $300</div></div>
-<span class="status amber" style="margin-left:8px"><span class="p-dot"></span>Searching</span>
-<span class="badge" style="margin-left:2px">Availability: 🟡 Medium</span>
-<div class="actions"><button class="btn-sm" type="button">Pause search</button><button class="btn-sm danger" type="button">Cancel search</button></div>
+
+<div class="auth-wrap">
+<div class="auth-photo" style="background-image:url(assets/img/airplane.jpg)">
+<div class="ov"></div>
+<div class="q"><b>Your journey. We find the way.</b><span>Join 2M+ travellers who let BTicket find their tickets.</span></div>
 </div>
-<div class="search-row">
-<div><div class="route">Tashkent → Samarkand</div><div class="prefs">3 October 2026 • 2 passengers • Afrosiyob preferred</div></div>
-<span class="status green" style="margin-left:8px"><span class="p-dot"></span>Found in 5 sec</span>
-<span class="badge" style="margin-left:2px">Availability: 🟢 High</span>
-<div class="actions"><button class="btn-sm" type="button">View ticket</button><button class="btn-sm danger" type="button">Cancel search</button></div>
+<div class="auth-form">
+<div class="auth-card" id="logCard">
+<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<h1>Welcome back.</h1>
+<p class="sub">Sign in to continue your journey.</p>
+<form id="logForm" novalidate>
+  <div class="fieldx"><label for="l-email">Email</label><input id="l-email" type="email" autocomplete="email" /><div class="fe" id="fe-lemail"></div></div>
+  <div class="fieldx"><label for="l-pass">Password</label>
+    <div class="pw-wrap"><input id="l-pass" type="password" autocomplete="current-password" />
+    <button class="pw-toggle" type="button" data-toggle="l-pass" aria-label="Show password">👁</button></div>
+    <div class="fe" id="fe-lpass"></div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
+    <label class="checkrow" style="margin-top:0"><input type="checkbox" id="l-remember" checked /> Remember me</label>
+    <a href="#" style="color:var(--blue);font-weight:700;font-size:.9rem" id="l-forgot">Forgot password?</a>
+  </div>
+  <button class="btn-cta lg auth-submit" type="submit" id="l-submit">Sign in</button>
+</form>
+<div class="or">OR</div>
+<div class="social">
+  <button type="button" id="l-google">Continue with Google</button>
+  <button type="button" id="l-apple">Continue with Apple</button>
 </div>
-<div class="search-row">
-<div><div class="route">Tashkent → Istanbul</div><div class="prefs">14 October 2026 • 1 passenger • Target price: $260</div></div>
-<span class="status amber" style="margin-left:8px"><span class="p-dot"></span>Searching</span>
-<span class="badge" style="margin-left:2px">Availability: 🔴 Low</span>
-<div class="actions"><button class="btn-sm" type="button">Pause search</button><button class="btn-sm danger" type="button">Cancel search</button></div>
-</div>
-</div>
-<div class="panel-card" style="margin-top:18px">
-<h3>💰 Price alerts</h3>
-<div class="hist-row"><div><div class="route">Tashkent → Dubai</div><div class="date">Max $300 • 27 September</div></div><span class="badge-st ok" style="margin-left:auto">Active</span><button class="btn-sm danger" type="button">Delete</button></div>
-<div class="hist-row"><div><div class="route">Tashkent → London</div><div class="date">Max $400 • 20 December</div></div><span class="badge-st ok" style="margin-left:auto">Active</span><button class="btn-sm danger" type="button">Delete</button></div>
-</div>
-<div class="score-card" style="margin-top:24px">
-<div class="score-dot">🟡</div>
-<div class="score-label">Medium availability</div>
-<p>BTicket Availability Score is based on currently available booking inventory and your selected travel criteria.</p>
+<div class="auth-alt">Don't have an account? <a href="register/">Create account</a></div>
 </div>
 </div>
+</div>
+<script>
+document.querySelectorAll(".pw-toggle").forEach(b => b.addEventListener("click", () => {
+  const inp = document.getElementById(b.dataset.toggle);
+  inp.type = inp.type === "password" ? "text" : "password";
+  b.textContent = inp.type === "password" ? "👁" : "🙈";
+}));
+document.getElementById("l-forgot").addEventListener("click", e => {
+  e.preventDefault();
+  document.getElementById("l-forgot").textContent = "Password reset link sent ✉";
+});
+document.getElementById("logForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const email = document.getElementById("l-email").value.trim();
+  const pass = document.getElementById("l-pass").value;
+  let ok = true;
+  const em = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  document.getElementById("fe-lemail").textContent = em ? "" : "Enter a valid email address";
+  document.getElementById("l-email").classList.toggle("bad", !em);
+  const pv = pass.length >= 6;
+  document.getElementById("fe-lpass").textContent = pv ? "" : "Password must be at least 6 characters";
+  document.getElementById("l-pass").classList.toggle("bad", !pv);
+  ok = em && pv;
+  if (!ok) return;
+  const btn = document.getElementById("l-submit");
+  btn.disabled = true; btn.textContent = "Signing in…";
+  setTimeout(() => {
+    btSave({ first: email.split("@")[0], email: email });
+    const ret = sessionStorage.getItem("bticket_return");
+    sessionStorage.removeItem("bticket_return");
+    location.href = ret || (window.BT_ROOT + "flights/");
+  }, 900);
+});
+["l-google","l-apple"].forEach(id => document.getElementById(id).addEventListener("click", () => {
+  btSave({ first: "Traveller", email: "social@bticket.uz" });
+  const ret = sessionStorage.getItem("bticket_return");
+  sessionStorage.removeItem("bticket_return");
+  location.href = ret || (window.BT_ROOT + "flights/");
+}));
+</script>
 <footer><div class="container">
 <div class="foot-cols">
 <div>

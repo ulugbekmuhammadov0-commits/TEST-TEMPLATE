@@ -60,6 +60,7 @@ function render(){
         '<button class="selectBtn" data-price="'+f.price+'" type="button">Select</button></div>';
     }).join("");
   document.querySelectorAll("#fl-tickets .selectBtn").forEach(btn => btn.addEventListener("click", () => {
+    if (!btAuthed()) { btGate(); return; }
     const pr = +btn.dataset.price, fee = Math.round(pr*0.1);
     document.getElementById("fb-ticket").textContent = "$"+pr;
     document.getElementById("fb-fee").textContent = "$"+fee;
@@ -73,6 +74,7 @@ function go(){
   const from = document.getElementById("fl-from").value, to = document.getElementById("fl-to").value;
   const err = document.getElementById("fl-err"); err.textContent = "";
   if (from===to) { err.textContent = "Please choose a different destination."; return; }
+  if (!btAuthed()) { btGate(); return; }
   document.querySelector(".widget-in").style.display = "none";
   document.getElementById("fl-loading").style.display = "block";
   document.getElementById("fl-loading").scrollIntoView({behavior:"smooth"});
@@ -84,7 +86,7 @@ if(q.has("from")) document.getElementById("fl-from").value = q.get("from");
 if(q.has("to")) document.getElementById("fl-to").value = q.get("to");
 if(q.has("date")) document.getElementById("fl-date").value = q.get("date");
 if(q.has("pax")) document.getElementById("fl-pax").value = q.get("pax");
-if(q.has("from") || q.has("to")) go();
+if(q.has("from") || q.has("to")) setTimeout(go, 450);
 </script>''')
 write("flights/index.html", "Flights — BTicket", FL_BODY, "Flights")
 
@@ -128,6 +130,7 @@ function render(){
       '<button class="selectBtn" data-price="'+t.price+'" type="button">Select</button></div>';
   }).join("");
   document.querySelectorAll("#tr-tickets .selectBtn").forEach(btn => btn.addEventListener("click", () => {
+    if (!btAuthed()) { btGate(); return; }
     const pr = +btn.dataset.price, fee = Math.round(pr*0.1);
     document.getElementById("tb-ticket").textContent = fmtUZS(pr);
     document.getElementById("tb-fee").textContent = fmtUZS(fee);
@@ -140,6 +143,7 @@ function go(){
   const from = document.getElementById("tr-from").value, to = document.getElementById("tr-to").value;
   const err = document.getElementById("tr-err"); err.textContent = "";
   if (from===to) { err.textContent = "Please choose a different destination."; return; }
+  if (!btAuthed()) { btGate(); return; }
   document.querySelector(".widget-in").style.display = "none";
   document.getElementById("tr-loading").style.display = "block";
   document.getElementById("tr-loading").scrollIntoView({behavior:"smooth"});
@@ -151,6 +155,6 @@ if(q.has("from")) document.getElementById("tr-from").value = q.get("from");
 if(q.has("to")) document.getElementById("tr-to").value = q.get("to");
 if(q.has("date")) document.getElementById("tr-date").value = q.get("date");
 if(q.has("pax")) document.getElementById("tr-pax").value = q.get("pax");
-if(q.has("from") || q.has("to")) go();
+if(q.has("from") || q.has("to")) setTimeout(go, 450);
 </script>''')
 write("trains/index.html", "Trains — BTicket", TR_BODY, "Trains")

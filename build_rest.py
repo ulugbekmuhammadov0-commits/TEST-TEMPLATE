@@ -1,9 +1,9 @@
 import os
 from partials import page, phero
 
-def write(path, title, body, active=None):
+def write(path, title, body, active=None, guard=False):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    open(path, "w").write(page(title, body, active))
+    open(path, "w").write(page(title, body, active, guard))
     print(path, len(body))
 
 # ============ HOW IT WORKS ============
@@ -141,6 +141,7 @@ PR += '''
 <div class="kv" style="border:none"><span>Currency</span><b>UZS</b></div>
 <div class="kv" style="border:none"><span>Notifications</span><b>Push • Telegram • Email</b></div>
 <div class="kv" style="border:none"><span>Security</span><b>2FA enabled</b></div>
+<button class="btn-outline" style="width:100%;margin-top:16px;color:var(--red);border-color:#f9c8cd" type="button" onclick="btOut()">Sign out</button>
 </div>
 </div>
 <script>
@@ -151,4 +152,4 @@ document.querySelectorAll("[data-ptab]").forEach(t => t.addEventListener("click"
   document.getElementById("p" + t.dataset.ptab).classList.add("active");
 }));
 </script>'''
-write("profile/index.html", "Profile — BTicket", PR)
+write("profile/index.html", "Profile — BTicket", PR, guard=True)

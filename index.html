@@ -8,9 +8,10 @@
 (function(){
   var d = location.pathname.split('/').filter(Boolean);
   var last = d[d.length - 1] || '';
-  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile'];
+  var dirs = ['flights','trains','active-searches','my-bookings','notifications','how-it-works','support','profile','register','login'];
   if (last && (/\.[a-z]+$/i.test(last) || dirs.indexOf(last) !== -1)) d.pop();
   var root = '/' + d.join('/') + (d.length ? '/' : '');
+  window.BT_ROOT = root;
   document.write('<base href="' + root + '">');
   document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
   document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
@@ -18,15 +19,22 @@
 </script>
 </head>
 <body>
+
 <nav class="nav"><div class="container nav-in">
 <a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
-<div class="links"><a href="flights/" class="active">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a>
-</div>
-<div class="nav-right">
+<div class="links" id="navLinksGuest"></div>
+<div class="links" id="navLinksAuthed" style="display:none"><a href="flights/" class="active">Flights</a><a href="trains/">Trains</a><a href="how-it-works/">How it works</a><a href="my-bookings/">My bookings</a><a href="active-searches/">Active searches</a><a href="notifications/">Notifications</a></div>
+<div class="nav-right" id="navGuest">
 <button class="pill" type="button">EN ▾</button>
 <button class="pill" type="button">UZS ▾</button>
-<button class="btn-outline" type="button">Sign in</button>
-<a class="btn-cta" style="text-decoration:none;display:inline-block" href="profile/">Get started</a>
+<a class="btn-outline" style="text-decoration:none;display:inline-block" href="login/">Sign in</a>
+<a class="btn-cta" style="text-decoration:none;display:inline-block" href="register/">Get started</a>
+</div>
+<div class="nav-right" id="navAuthed" style="display:none">
+<a class="pill" style="text-decoration:none" href="profile/">👤 <span id="navName">Profile</span></a>
+<button class="pill" type="button">EN ▾</button>
+<button class="pill" type="button">UZS ▾</button>
+<button class="btn-outline" type="button" onclick="btOut()">Sign out</button>
 </div>
 </div></nav>
 <header class="mast">
@@ -98,12 +106,12 @@
 <section class="section" id="destinations">
 <div class="sec-head"><h2>Where would you go?</h2><p>Six destinations, one search. Choose where next.</p></div>
 <div class="dest-grid six">
-<div class="dest photo" style="background-image:url(assets/img/dubai.jpg)"><div class="tint"></div><div class="info"><div><b>Dubai</b><span>United Arab Emirates</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(assets/img/istanbul.jpg)"><div class="tint"></div><div class="info"><div><b>Istanbul</b><span>Turkey</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(assets/img/seoul.jpg)"><div class="tint"></div><div class="info"><div><b>Seoul</b><span>South Korea</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(assets/img/samarkand.jpg)"><div class="tint"></div><div class="info"><div><b>Samarkand</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(assets/img/bukhara.jpg)"><div class="tint"></div><div class="info"><div><b>Bukhara</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo" style="background-image:url(assets/img/tashkent.jpg)"><div class="tint"></div><div class="info"><div><b>Tashkent</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/dubai.jpg"><div class="tint"></div><div class="info"><div><b>Dubai</b><span>United Arab Emirates</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/istanbul.jpg"><div class="tint"></div><div class="info"><div><b>Istanbul</b><span>Turkey</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/seoul.jpg"><div class="tint"></div><div class="info"><div><b>Seoul</b><span>South Korea</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/samarkand.jpg"><div class="tint"></div><div class="info"><div><b>Samarkand</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/bukhara.jpg"><div class="tint"></div><div class="info"><div><b>Bukhara</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+<div class="dest photo lz" data-bg="assets/img/tashkent.jpg"><div class="tint"></div><div class="info"><div><b>Tashkent</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
 </div>
 </section>
 
@@ -112,12 +120,12 @@
 <div class="steps"><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="sn">01</div><div class="sname">TELL US</div><p>Choose your destination, date and preferences.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/><path d="M8 11l6 0"/></svg></div><div class="sn">02</div><div class="sname">SEARCH</div><p>BTicket searches available flights and trains.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><path d="M12 12l4-4"/></svg></div><div class="sn">03</div><div class="sname">MONITOR</div><p>If your ticket isn’t available, we keep looking.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M4 9l16-5-5 16-3-6-3 2v-4z"/></svg></div><div class="sn">04</div><div class="sname">FOUND</div><p>A matching ticket becomes available.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg></div><div class="sn">05</div><div class="sname">NOTIFY</div><p>You receive an instant notification.</p></div><div class="step on"><div class="si"><svg viewBox="0 0 24 24"><path d="M3 8l18-4-3 12-5-2-3 4-2-6z"/></svg></div><div class="sn">06</div><div class="sname">TRAVEL</div><p>Book your journey and go.</p></div></div></section>
 <section class="section" style="padding-bottom:72px">
 <div class="final-photo">
-<div class="ph" style="background-image:url(assets/img/train.jpg)"></div>
+<div class="ph lz" data-bg="assets/img/train.jpg"></div>
 <div class="ov"></div>
 <div class="fc">
 <h2>Where will you go next?</h2>
 <p>Let BTicket find the ticket.</p>
-<a class="btn-cta lg" style="text-decoration:none;display:inline-block" href="flights/">Start searching →</a>
+<a class="btn-cta lg" style="text-decoration:none;display:inline-block" href="flights/" id="finalStart">Start searching →</a>
 </div>
 </div>
 </section>
@@ -137,8 +145,33 @@ document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", 
   const m = b.dataset.go, f = m === "flights" ? "f" : "t";
   const from = document.getElementById("h"+f+"-from").value, to = document.getElementById("h"+f+"-to").value;
   const date = document.getElementById("h"+f+"-date").value, pax = document.getElementById("h"+f+"-pax").value;
-  location.href = m + "/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + "&date=" + date + "&pax=" + encodeURIComponent(pax);
+  const url = window.BT_ROOT + m + "/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + "&date=" + date + "&pax=" + encodeURIComponent(pax);
+  if (!btAuthed()) { btGate(url); return; }
+  location.href = url;
 }));
+/* final CTA: gate for guests, direct for users */
+(function(){
+  const fs = document.getElementById("finalStart");
+  if (fs) fs.addEventListener("click", e => {
+    if (!btAuthed()) { e.preventDefault(); btGate(window.BT_ROOT + "flights/"); }
+  });
+})();
+/* lazy-load destination and CTA photos */
+(function(){
+  var els = Array.prototype.slice.call(document.querySelectorAll("[data-bg]"));
+  function load(el){ el.style.backgroundImage = "url(" + el.dataset.bg + ")"; el.classList.remove("lz"); }
+  function check(){
+    var vh = Math.max(window.innerHeight || 0, 600);
+    els = els.filter(function(el){
+      if (!el) return false;
+      var r = el.getBoundingClientRect();
+      if (r.top <= vh + 300 && r.bottom >= -300){ load(el); return false; }
+      return true;
+    });
+  }
+  check();
+  window.addEventListener("scroll", check, { passive: true });
+})();
 const states = [
   {cl:"hard", label:"Hard to find", note:"BTicket is monitoring available tickets."},
   {cl:"search", label:"Searching", note:"BTicket is actively checking availability."},
@@ -171,5 +204,28 @@ setInterval(() => {
 </div>
 <div class="foot-bottom"><span>© 2026 BTicket. All rights reserved.</span><span>Made in Uzbekistan 🇺🇿</span></div>
 </div></footer>
+<script>
+function btUser(){ try { return JSON.parse(localStorage.getItem('bticket_user') || 'null'); } catch(e){ return null; } }
+function btAuthed(){ return !!localStorage.getItem('bticket_user'); }
+function btSave(u){ localStorage.setItem('bticket_user', JSON.stringify(u)); }
+function btOut(){ localStorage.removeItem('bticket_user'); location.href = window.BT_ROOT; }
+function btGate(target){
+  sessionStorage.setItem('bticket_return', target || location.href);
+  location.href = window.BT_ROOT + 'register/';
+}
+(function(){
+  var u = btUser();
+  var g = document.getElementById('navGuest'), a = document.getElementById('navAuthed');
+  var gl = document.getElementById('navLinksGuest'), al = document.getElementById('navLinksAuthed');
+  if (g && a){ g.style.display = u ? 'none' : ''; a.style.display = u ? '' : 'none'; }
+  if (gl && al){ al.style.display = u ? '' : 'none'; }
+  if (u){ var n = document.getElementById('navName'); if (n) n.textContent = (u.first || 'Profile'); }
+  var guard = document.getElementById('authGuard');
+  if (guard && !u){
+    sessionStorage.setItem('bticket_return', location.href);
+    location.href = window.BT_ROOT + 'login/';
+  }
+})();
+</script>
 </body>
 </html>

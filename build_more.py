@@ -63,7 +63,7 @@ MB += '''
 <div class="panel-card" style="margin-top:18px">
 <h3>🎟 Latest digital ticket</h3>
 <div class="dticket">
-<div class="dt-top"><div class="logo2"><span class="logo-mark" style="width:28px;height:28px;border-radius:9px">B</span>BTicket</div><span class="badge-st ok" style="background:rgba(255,255,255,.16);color:#fff">CONFIRMED</span></div>
+<div class="dt-top"><div class="logo2"><img class="logo-mark" style="width:28px;height:28px;border-radius:9px" src="assets/img/logo-mark.png" alt="B" />BTicket</div><span class="badge-st ok" style="background:rgba(255,255,255,.16);color:#fff">CONFIRMED</span></div>
 <div class="dt-main">
 <div class="dt-route">TAS <span class="ln"></span> SKD</div>
 <div style="color:var(--mut);font-size:.85rem;margin-top:6px">Tashkent → Samarkand • 27 September 2026</div>

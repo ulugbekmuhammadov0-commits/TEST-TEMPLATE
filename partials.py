@@ -9,7 +9,7 @@ BASE_SCRIPT = '''<script>
   var root = '/' + d.join('/') + (d.length ? '/' : '');
   window.BT_ROOT = root;
   document.write('<base href="' + root + '">');
-  document.write('<link rel="icon" type="image/svg+xml" href="' + root + 'assets/img/favicon.svg" />');
+  document.write('<link rel="icon" type="image/png" href="' + root + 'assets/img/favicon.png" />');
   document.write('<link rel="stylesheet" href="' + root + 'assets/css/style.css" />');
 })();
 </script>'''
@@ -43,7 +43,7 @@ def header(active=None):
         act = ' class="active"' if active == label else ""
         return f'<a href="{href}"{act}>{label}</a>'
     return f'''<nav class="nav"><div class="container nav-in">
-<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><img class="logo-mark" src="assets/img/logo-mark.png" alt="BTicket" />BTicket</a>
 <div class="links" id="navLinksGuest"></div>
 <div class="links" id="navLinksAuthed" style="display:none">{l("flights/","Flights")}{l("trains/","Trains")}{l("how-it-works/","How it works")}{l("my-bookings/","My bookings")}{l("active-searches/","Active searches")}{l("notifications/","Notifications")}</div>
 <div class="nav-right" id="navGuest">
@@ -64,7 +64,7 @@ def footer():
     return '''<footer><div class="container">
 <div class="foot-cols">
 <div>
-<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><img class="logo-mark" src="assets/img/logo-mark.png" alt="BTicket" />BTicket</a>
 <p style="color:var(--mut);font-size:.9rem;margin-top:10px">Your journey. We find the way.</p>
 <div style="margin-top:14px">
 <a href="#">Telegram</a><a href="#">Instagram</a><a href="#">support@bticket.uz</a><a href="#">+998 71 200 00 00</a>

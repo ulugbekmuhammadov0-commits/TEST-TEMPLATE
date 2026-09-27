@@ -16,7 +16,7 @@ REGISTER = '''
 ''' + PHOTO_BLOCK + '''
 <div class="auth-form">
 <div class="auth-card" id="regCard">
-<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><img class="logo-mark" src="assets/img/logo-mark.png" alt="BTicket" />BTicket</a>
 <h1>Start your journey with BTicket.</h1>
 <p class="sub">Create an account and let us find your next ticket.</p>
 <form id="regForm" novalidate>
@@ -103,7 +103,7 @@ LOGIN = '''
 ''' + PHOTO_BLOCK + '''
 <div class="auth-form">
 <div class="auth-card" id="logCard">
-<a class="logo" href="./"><span class="logo-mark">B</span>BTicket</a>
+<a class="logo" href="./"><img class="logo-mark" src="assets/img/logo-mark.png" alt="BTicket" />BTicket</a>
 <h1>Welcome back.</h1>
 <p class="sub">Sign in to continue your journey.</p>
 <form id="logForm" novalidate>

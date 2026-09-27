@@ -16,8 +16,38 @@ STEPS = [
  ("NOTIFY","You receive an instant notification."),
  ("TRAVEL","Book your journey and go."),
 ]
+steps_html = "".join(
+    '<div class="step on"><div class="si">' + ICONS[s] + '</div><div class="sn">0' + str(s) + '</div><div class="sname">' + nm + '</div><p>' + tx + '</p></div>'
+    for s, (nm, tx) in enumerate(STEPS, 1)
+)
 
-PRE = '''<header class="mast">
+DESTS = [
+ ("Dubai","United Arab Emirates","dubai.jpg"),
+ ("Istanbul","Turkey","istanbul.jpg"),
+ ("Seoul","South Korea","seoul.jpg"),
+ ("London","United Kingdom","london.jpg"),
+ ("Samarkand","Uzbekistan","samarkand.jpg"),
+ ("Bukhara","Uzbekistan","bukhara.jpg"),
+ ("Khiva","Uzbekistan","khiva.jpg"),
+ ("Tashkent","Uzbekistan","tashkent.jpg"),
+]
+dest_cards = "".join(
+    '<div class="dest photo" style="background-image:url(assets/img/' + img + ')"><div class="tint"></div><div class="info"><div><b>' + name + '</b><span>' + country + '</span></div><span class="go">→</span></div></div>'
+    for name, country, img in DESTS
+)
+
+ROUTES = [
+ ("Tashkent → Dubai","from $180","dubai.jpg"),
+ ("Tashkent → Samarkand","from 105,000 UZS","samarkand.jpg"),
+ ("Tashkent → Istanbul","from $210","istanbul.jpg"),
+]
+route_cards = "".join(
+    '<div class="route-card"><div class="ph" style="background-image:url(assets/img/' + img + ')"></div><div class="ov"></div><div class="rc"><div><b>' + r + '</b><span>Daily • monitored by BTicket</span></div><span class="pr">' + p + '</span></div></div>'
+    for r, p, img in ROUTES
+)
+
+body = '''
+<header class="mast">
 <div class="mast-photo" style="background-image:url(assets/img/airplane.jpg)"></div>
 <div class="mast-fade"></div>
 <div class="container">
@@ -64,7 +94,7 @@ PRE = '''<header class="mast">
 
 <main class="container">
 <section class="section" id="active-search">
-<div class="sec-head"><h2>Active ticket search</h2><p>You don’t need to keep checking. BTicket does it for you.</p></div>
+<div class="sec-head"><span class="eye">AUTOMATION</span><h2>Active ticket search</h2><p>You don’t need to keep checking. BTicket does it for you.</p></div>
 <div class="st3" id="statusBar">
 <div class="st3c on" data-st="hard"><div class="dot red">🔴</div><b>Hard to find</b><p>Few matching tickets currently available.</p></div>
 <div class="st3c" data-st="search"><div class="dot amber">🟡</div><b>Searching</b><p>BTicket is actively checking availability.</p></div>
@@ -84,27 +114,23 @@ PRE = '''<header class="mast">
 </section>
 
 <section class="section" id="destinations">
-<div class="sec-head"><h2>Where would you go?</h2><p>Six destinations, one search. Choose where next.</p></div>
+<div class="sec-head"><span class="eye">DESTINATIONS</span><h2>Where would you go?</h2><p>Eight destinations, one search. Choose where next.</p></div>
 <div class="dest-grid six">
-<div class="dest photo lz" data-bg="assets/img/dubai.jpg"><div class="tint"></div><div class="info"><div><b>Dubai</b><span>United Arab Emirates</span></div><span class="go">→</span></div></div>
-<div class="dest photo lz" data-bg="assets/img/istanbul.jpg"><div class="tint"></div><div class="info"><div><b>Istanbul</b><span>Turkey</span></div><span class="go">→</span></div></div>
-<div class="dest photo lz" data-bg="assets/img/seoul.jpg"><div class="tint"></div><div class="info"><div><b>Seoul</b><span>South Korea</span></div><span class="go">→</span></div></div>
-<div class="dest photo lz" data-bg="assets/img/samarkand.jpg"><div class="tint"></div><div class="info"><div><b>Samarkand</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo lz" data-bg="assets/img/bukhara.jpg"><div class="tint"></div><div class="info"><div><b>Bukhara</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
-<div class="dest photo lz" data-bg="assets/img/tashkent.jpg"><div class="tint"></div><div class="info"><div><b>Tashkent</b><span>Uzbekistan</span></div><span class="go">→</span></div></div>
+''' + dest_cards + '''
+</div>
+<div class="route-strip">
+''' + route_cards + '''
 </div>
 </section>
 
 <section class="section" id="how">
-<div class="sec-head"><h2>How BTicket works</h2><p>From your request to your journey — we handle the searching.</p></div>
-<div class="steps">'''
+<div class="sec-head"><span class="eye">HOW IT WORKS</span><h2>How BTicket works</h2><p>From your request to your journey — we handle the searching.</p></div>
+<div class="steps">''' + steps_html + '''</div>
+</section>
 
-MID = "</div></section>"
-
-POST = '''
 <section class="section" style="padding-bottom:72px">
 <div class="final-photo">
-<div class="ph lz" data-bg="assets/img/train.jpg"></div>
+<div class="ph" style="background-image:url(assets/img/train.jpg)"></div>
 <div class="ov"></div>
 <div class="fc">
 <h2>Where will you go next?</h2>
@@ -133,28 +159,11 @@ document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", 
   if (!btAuthed()) { btGate(url); return; }
   location.href = url;
 }));
-/* final CTA: gate for guests, direct for users */
 (function(){
   const fs = document.getElementById("finalStart");
   if (fs) fs.addEventListener("click", e => {
     if (!btAuthed()) { e.preventDefault(); btGate(window.BT_ROOT + "flights/"); }
   });
-})();
-/* lazy-load destination and CTA photos */
-(function(){
-  var els = Array.prototype.slice.call(document.querySelectorAll("[data-bg]"));
-  function load(el){ el.style.backgroundImage = "url(" + el.dataset.bg + ")"; el.classList.remove("lz"); }
-  function check(){
-    var vh = Math.max(window.innerHeight || 0, 600);
-    els = els.filter(function(el){
-      if (!el) return false;
-      var r = el.getBoundingClientRect();
-      if (r.top <= vh + 300 && r.bottom >= -300){ load(el); return false; }
-      return true;
-    });
-  }
-  check();
-  window.addEventListener("scroll", check, { passive: true });
 })();
 const states = [
   {cl:"hard", label:"Hard to find", note:"BTicket is monitoring available tickets."},
@@ -174,10 +183,5 @@ setInterval(() => {
 </script>
 '''
 
-steps_html = "".join(
-    '<div class="step on"><div class="si">' + ICONS[s] + '</div><div class="sn">0' + str(s) + '</div><div class="sname">' + nm + '</div><p>' + tx + '</p></div>'
-    for s, (nm, tx) in enumerate(STEPS, 1)
-)
-body = PRE + steps_html + MID + POST
 open("index.html","w").write(page("BTicket — Your journey. We find the way.", body, "Flights"))
 print("index.html bytes:", len(body))

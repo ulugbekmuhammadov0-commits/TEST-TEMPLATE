@@ -486,3 +486,52 @@
   .step .si{flex:none;margin:0}
   .step .sn,.step .sname{display:inline}
 }
+
+/* ===== v2 polish: hero + destinations + routes + ticket cards ===== */
+.sec-head .eye{display:inline-flex;align-items:center;gap:6px;background:var(--soft);color:var(--royal);border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;letter-spacing:.08em;margin-bottom:14px}
+.mast-in h1{font-size:3.3rem}
+.mast-stats{display:flex;gap:12px;flex-wrap:wrap}
+.mast-stats > div{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:10px 18px;backdrop-filter:blur(8px)}
+.mast-stats > div b{font-size:1.25rem}
+.dest{transition:transform .25s,box-shadow .25s;cursor:pointer}
+.dest:hover{transform:translateY(-5px);box-shadow:0 22px 48px rgba(20,50,120,.3)}
+.dest .go{transition:transform .25s;font-size:1.2rem;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.dest:hover .go{transform:translateX(5px);background:#fff;color:var(--ink)}
+.route-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.route-card{position:relative;border-radius:22px;overflow:hidden;min-height:210px;color:#fff;display:flex;align-items:flex-end;box-shadow:0 14px 34px rgba(20,50,120,.18);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.route-card:hover{transform:translateY(-5px);box-shadow:0 22px 48px rgba(20,50,120,.3)}
+.route-card .ph{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s ease}
+.route-card:hover .ph{transform:scale(1.07)}
+.route-card .ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 25%,rgba(5,12,30,.88))}
+.route-card .rc{position:relative;padding:18px;width:100%;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.route-card .rc b{font-size:1.08rem;display:block;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.route-card .rc span{font-size:.8rem;opacity:.9}
+.route-card .pr{font-weight:800;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:7px 13px;border-radius:999px;backdrop-filter:blur(6px);font-size:.83rem;white-space:nowrap}
+/* ticket cards v2 */
+.res-detail{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:12px;display:grid;grid-template-columns:215px auto 1fr auto auto auto;gap:18px;align-items:center;transition:.2s;box-shadow:0 6px 20px rgba(20,50,120,.06)}
+.res-detail:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(31,107,242,.15);border-color:#cfdcfb}
+.res-detail .airline{display:flex;gap:12px;align-items:center;min-width:0;font-weight:400}
+.res-detail .airline .av2{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#e8f0ff,#dbe6ff);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex:none}
+.res-detail .airline .an{min-width:0}
+.res-detail .airline .an b{display:block;font-size:.95rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-detail .airline .an span{color:var(--mut);font-size:.74rem;font-weight:700}
+.res-detail .seg b{font-size:1.25rem;display:block;font-weight:800}
+.res-detail .seg span{font-size:.7rem;color:var(--mut);font-weight:800;letter-spacing:.06em}
+.res-detail .dur{text-align:center;color:var(--mut);font-size:.78rem;min-width:120px}
+.res-detail .dur .ln{position:relative;height:2px;background:var(--line);margin:10px 10px;border-radius:2px;display:block}
+.res-detail .dur .ln::after{content:"✈";position:absolute;top:-9px;left:50%;transform:translateX(-50%);color:var(--blue);font-size:.75rem;background:#fff;padding:0 5px}
+.res-detail .dur.train .ln::after{content:"🚆";font-size:.85rem;top:-11px}
+.res-detail .price{text-align:right;min-width:118px}
+.res-detail .price b{display:block;font-size:1.2rem;color:var(--royal);font-weight:800}
+.res-detail .price span{font-size:.72rem;color:var(--mut)}
+.selectBtn{border:none;background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;font-weight:800;border-radius:14px;padding:13px 26px;cursor:pointer;box-shadow:0 8px 20px rgba(80,60,220,.25);transition:.18s;white-space:nowrap;font-size:.95rem}
+.selectBtn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(80,60,220,.38)}
+.selectBtn:disabled{opacity:.75;cursor:default}
+@media(max-width:820px){
+  .res-detail{grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+  .res-detail .dur{grid-column:1/-1;order:3}
+  .res-detail .price{text-align:left}
+  .res-detail .selectBtn{grid-column:1/-1;width:100%}
+  .route-strip{grid-template-columns:1fr}
+  .mast-in h1{font-size:2.35rem}
+}
